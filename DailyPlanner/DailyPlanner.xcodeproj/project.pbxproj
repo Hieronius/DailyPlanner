@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DD79B8EB2D02A7480014CDE3 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DD79B8EA2D02A7480014CDE3 /* RealmSwift */; };
 		DDABBB502CF976C700AC4CC7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDABBB4F2CF976C700AC4CC7 /* AppDelegate.swift */; };
 		DDABBB522CF976C700AC4CC7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDABBB512CF976C700AC4CC7 /* SceneDelegate.swift */; };
 		DDABBB542CF976C700AC4CC7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDABBB532CF976C700AC4CC7 /* MainViewController.swift */; };
@@ -29,6 +30,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD79B8EB2D02A7480014CDE3 /* RealmSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +114,9 @@
 			dependencies = (
 			);
 			name = DailyPlanner;
+			packageProductDependencies = (
+				DD79B8EA2D02A7480014CDE3 /* RealmSwift */,
+			);
 			productName = DailyPlanner;
 			productReference = DDABBB4C2CF976C700AC4CC7 /* DailyPlanner.app */;
 			productType = "com.apple.product-type.application";
@@ -140,6 +145,9 @@
 				Base,
 			);
 			mainGroup = DDABBB432CF976C700AC4CC7;
+			packageReferences = (
+				DD79B8E92D02A7480014CDE3 /* XCRemoteSwiftPackageReference "realm-swift" */,
+			);
 			productRefGroup = DDABBB4D2CF976C700AC4CC7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -384,6 +392,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		DD79B8E92D02A7480014CDE3 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 10.47.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DD79B8EA2D02A7480014CDE3 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DD79B8E92D02A7480014CDE3 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = DDABBB442CF976C700AC4CC7 /* Project object */;
 }
