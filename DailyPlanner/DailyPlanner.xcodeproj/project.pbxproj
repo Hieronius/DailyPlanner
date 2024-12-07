@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		DD79B8EB2D02A7480014CDE3 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DD79B8EA2D02A7480014CDE3 /* RealmSwift */; };
+		DD79B8F52D02B1750014CDE3 /* GenericViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD79B8F42D02B1750014CDE3 /* GenericViewController.swift */; };
 		DDABBB502CF976C700AC4CC7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDABBB4F2CF976C700AC4CC7 /* AppDelegate.swift */; };
 		DDABBB522CF976C700AC4CC7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDABBB512CF976C700AC4CC7 /* SceneDelegate.swift */; };
 		DDABBB542CF976C700AC4CC7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDABBB532CF976C700AC4CC7 /* MainViewController.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DD79B8F42D02B1750014CDE3 /* GenericViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericViewController.swift; sourceTree = "<group>"; };
 		DDABBB4C2CF976C700AC4CC7 /* DailyPlanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DailyPlanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDABBB4F2CF976C700AC4CC7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DDABBB512CF976C700AC4CC7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -54,7 +56,6 @@
 			children = (
 				DD79B8E82D02A5240014CDE3 /* Detail */,
 				DD79B8E72D02A5190014CDE3 /* Main */,
-				DDABBB532CF976C700AC4CC7 /* MainViewController.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -62,6 +63,9 @@
 		DD79B8E72D02A5190014CDE3 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				DD79B8ED2D02AA930014CDE3 /* Model */,
+				DD79B8EE2D02AA970014CDE3 /* View */,
+				DD79B8EC2D02AA8C0014CDE3 /* Controller */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -69,8 +73,69 @@
 		DD79B8E82D02A5240014CDE3 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
+				DD79B8EF2D02AAA40014CDE3 /* Model */,
+				DD79B8F12D02AAB10014CDE3 /* View */,
+				DD79B8F02D02AAA90014CDE3 /* Controller */,
 			);
 			path = Detail;
+			sourceTree = "<group>";
+		};
+		DD79B8EC2D02AA8C0014CDE3 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DDABBB532CF976C700AC4CC7 /* MainViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		DD79B8ED2D02AA930014CDE3 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DD79B8EE2D02AA970014CDE3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DD79B8EF2D02AAA40014CDE3 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DD79B8F02D02AAA90014CDE3 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		DD79B8F12D02AAB10014CDE3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DD79B8F22D02AABC0014CDE3 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				DD79B8F42D02B1750014CDE3 /* GenericViewController.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		DD79B8F32D02AAC20014CDE3 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Persistence;
 			sourceTree = "<group>";
 		};
 		DDABBB432CF976C700AC4CC7 = {
@@ -93,6 +158,8 @@
 			isa = PBXGroup;
 			children = (
 				DD79B8E62D02A3B80014CDE3 /* Screens */,
+				DD79B8F32D02AAC20014CDE3 /* Persistence */,
+				DD79B8F22D02AABC0014CDE3 /* Helpers */,
 				DD79B8E52D029D780014CDE3 /* Resources */,
 			);
 			path = DailyPlanner;
@@ -176,6 +243,7 @@
 			files = (
 				DDABBB542CF976C700AC4CC7 /* MainViewController.swift in Sources */,
 				DDABBB502CF976C700AC4CC7 /* AppDelegate.swift in Sources */,
+				DD79B8F52D02B1750014CDE3 /* GenericViewController.swift in Sources */,
 				DDABBB522CF976C700AC4CC7 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
