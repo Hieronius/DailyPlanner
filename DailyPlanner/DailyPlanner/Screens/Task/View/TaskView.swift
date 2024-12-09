@@ -1,6 +1,6 @@
 import UIKit
 
-final class DetailView: UIView {
+final class TaskView: UIView {
 
 	// id
 	// name

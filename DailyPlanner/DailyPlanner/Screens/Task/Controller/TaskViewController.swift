@@ -1,6 +1,6 @@
 import UIKit
 
-final class DetailViewController: GenericViewController<DetailView> {
+final class TaskViewController: GenericViewController<TaskView> {
 
 	// toggle isDetail/isCreation screen
 

@@ -1,7 +1,7 @@
 import UIKit
 
 final class MainView: UIView {
-	// Calendar View
+	// Calendar View "UICalendarView, CalendarKit, DatePicker"
 	// Table View
 	// Button - "Create"
 }
