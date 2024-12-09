@@ -11,6 +11,13 @@
 		DD7CD0C82D03E13600F34FCC /* JSONHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7CD0C72D03E13600F34FCC /* JSONHandler.swift */; };
 		DD7CD0CA2D03E22600F34FCC /* RealmDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7CD0C92D03E22600F34FCC /* RealmDataManager.swift */; };
 		DD85F1532D068DD20061664F /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DD85F1522D068DD20061664F /* RealmSwift */; };
+		DD85F1562D0691580061664F /* ToDo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD85F1552D0691580061664F /* ToDo.swift */; };
+		DD85F1582D06918E0061664F /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD85F1572D06918E0061664F /* MainView.swift */; };
+		DD85F15A2D0691D90061664F /* ToDoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD85F1592D0691D90061664F /* ToDoTableViewCell.swift */; };
+		DD85F15C2D0691E60061664F /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD85F15B2D0691E60061664F /* DetailView.swift */; };
+		DD85F15E2D0691F00061664F /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD85F15D2D0691F00061664F /* DetailViewController.swift */; };
+		DD85F1602D0692810061664F /* ToDoRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD85F15F2D0692810061664F /* ToDoRealm.swift */; };
+		DD85F1622D0697070061664F /* Tasks.json in Resources */ = {isa = PBXBuildFile; fileRef = DD85F1612D0697070061664F /* Tasks.json */; };
 		DDABBB502CF976C700AC4CC7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDABBB4F2CF976C700AC4CC7 /* AppDelegate.swift */; };
 		DDABBB522CF976C700AC4CC7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDABBB512CF976C700AC4CC7 /* SceneDelegate.swift */; };
 		DDABBB542CF976C700AC4CC7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDABBB532CF976C700AC4CC7 /* MainViewController.swift */; };
@@ -23,6 +30,13 @@
 		DD7CD0C72D03E13600F34FCC /* JSONHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONHandler.swift; sourceTree = "<group>"; };
 		DD7CD0C92D03E22600F34FCC /* RealmDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDataManager.swift; sourceTree = "<group>"; };
 		DD85F1502D068D7F0061664F /* DailyPlanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = DailyPlanner.app; path = "/Users/arsentijhalimovskij/Documents/GitHub/DailyPlanner/DailyPlanner/build/Debug-iphoneos/DailyPlanner.app"; sourceTree = "<absolute>"; };
+		DD85F1552D0691580061664F /* ToDo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDo.swift; sourceTree = "<group>"; };
+		DD85F1572D06918E0061664F /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		DD85F1592D0691D90061664F /* ToDoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoTableViewCell.swift; sourceTree = "<group>"; };
+		DD85F15B2D0691E60061664F /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		DD85F15D2D0691F00061664F /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		DD85F15F2D0692810061664F /* ToDoRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoRealm.swift; sourceTree = "<group>"; };
+		DD85F1612D0697070061664F /* Tasks.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Tasks.json; sourceTree = "<group>"; };
 		DDABBB4F2CF976C700AC4CC7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DDABBB512CF976C700AC4CC7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		DDABBB532CF976C700AC4CC7 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -51,6 +65,7 @@
 				DDABBB582CF976CA00AC4CC7 /* Assets.xcassets */,
 				DDABBB5A2CF976CA00AC4CC7 /* LaunchScreen.storyboard */,
 				DDABBB5D2CF976CA00AC4CC7 /* Info.plist */,
+				DD85F1612D0697070061664F /* Tasks.json */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -95,6 +110,7 @@
 		DD79B8ED2D02AA930014CDE3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				DD85F1552D0691580061664F /* ToDo.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -102,6 +118,8 @@
 		DD79B8EE2D02AA970014CDE3 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				DD85F1572D06918E0061664F /* MainView.swift */,
+				DD85F1592D0691D90061664F /* ToDoTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -116,6 +134,7 @@
 		DD79B8F02D02AAA90014CDE3 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				DD85F15D2D0691F00061664F /* DetailViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -123,6 +142,7 @@
 		DD79B8F12D02AAB10014CDE3 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				DD85F15B2D0691E60061664F /* DetailView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -140,6 +160,7 @@
 			children = (
 				DD7CD0C72D03E13600F34FCC /* JSONHandler.swift */,
 				DD7CD0C92D03E22600F34FCC /* RealmDataManager.swift */,
+				DD85F15F2D0692810061664F /* ToDoRealm.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -226,6 +247,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD85F1622D0697070061664F /* Tasks.json in Resources */,
 				DDABBB5C2CF976CA00AC4CC7 /* LaunchScreen.storyboard in Resources */,
 				DDABBB592CF976CA00AC4CC7 /* Assets.xcassets in Resources */,
 			);
@@ -238,10 +260,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD85F15E2D0691F00061664F /* DetailViewController.swift in Sources */,
 				DDABBB542CF976C700AC4CC7 /* MainViewController.swift in Sources */,
+				DD85F1582D06918E0061664F /* MainView.swift in Sources */,
+				DD85F1562D0691580061664F /* ToDo.swift in Sources */,
+				DD85F15C2D0691E60061664F /* DetailView.swift in Sources */,
+				DD85F1602D0692810061664F /* ToDoRealm.swift in Sources */,
 				DD7CD0C82D03E13600F34FCC /* JSONHandler.swift in Sources */,
 				DDABBB502CF976C700AC4CC7 /* AppDelegate.swift in Sources */,
 				DD79B8F52D02B1750014CDE3 /* GenericViewController.swift in Sources */,
+				DD85F15A2D0691D90061664F /* ToDoTableViewCell.swift in Sources */,
 				DDABBB522CF976C700AC4CC7 /* SceneDelegate.swift in Sources */,
 				DD7CD0CA2D03E22600F34FCC /* RealmDataManager.swift in Sources */,
 			);
