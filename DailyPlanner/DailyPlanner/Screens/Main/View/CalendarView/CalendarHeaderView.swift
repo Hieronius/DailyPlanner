@@ -1,16 +1,10 @@
 import UIKit
 
-protocol CalendarHeaderViewDelegate: AnyObject {
-	func closeButtonTapped()
-}
-
 class CalendarHeaderView: UIView {
 
 	// MARK: - Public Properties
 
-	weak var delegate: CalendarHeaderViewDelegate?
 	var monthLabel: UILabel!
-	var closeButton: UIButton!
 	var dayOfWeekStackView: UIStackView!
 	var separatorView: UIView!
 
@@ -61,7 +55,6 @@ class CalendarHeaderView: UIView {
 		layer.cornerRadius = 15
 
 		setupMonthLabel()
-		setupCloseButton()
 		setupDayOfWeekStackView()
 		setupSeparatorView()
 
@@ -75,22 +68,6 @@ class CalendarHeaderView: UIView {
 		monthLabel.isAccessibilityElement = true
 
 		addSubview(monthLabel)
-	}
-
-	private func setupCloseButton() {
-		closeButton = UIButton()
-		let configuration = UIImage.SymbolConfiguration(scale: .large)
-		let image = UIImage(systemName: "xmark.circle.fill", withConfiguration: configuration)
-		closeButton.setImage(image, for: .normal)
-		closeButton.tintColor = .secondaryLabel
-		closeButton.contentMode = .scaleAspectFill
-		closeButton.isUserInteractionEnabled = true
-		closeButton.isAccessibilityElement = true
-		closeButton.accessibilityLabel = "Close Picker"
-
-		addSubview(closeButton)
-
-		closeButton.addTarget(self, action: #selector(didTapExitButton), for: .touchUpInside)
 	}
 
 	private func setupDayOfWeekStackView() {
@@ -126,7 +103,6 @@ class CalendarHeaderView: UIView {
 	private func setupHeaderConstraints() {
 		// Enable Auto Layout for each view
 		monthLabel.translatesAutoresizingMaskIntoConstraints = false
-		closeButton.translatesAutoresizingMaskIntoConstraints = false
 		dayOfWeekStackView.translatesAutoresizingMaskIntoConstraints = false
 		separatorView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -134,15 +110,7 @@ class CalendarHeaderView: UIView {
 		NSLayoutConstraint.activate([
 			monthLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 15),
 			monthLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
-			monthLabel.trailingAnchor.constraint(equalTo: closeButton.leadingAnchor, constant: -5)
-		])
-
-		// Add constraints for closeButton
-		NSLayoutConstraint.activate([
-			closeButton.centerYAnchor.constraint(equalTo: monthLabel.centerYAnchor),
-			closeButton.widthAnchor.constraint(equalToConstant: 28),
-			closeButton.heightAnchor.constraint(equalToConstant: 28),
-			closeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15)
+			monthLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30)
 		])
 
 		// Add constraints for dayOfWeekStackView
@@ -159,13 +127,6 @@ class CalendarHeaderView: UIView {
 			separatorView.bottomAnchor.constraint(equalTo: bottomAnchor),
 			separatorView.heightAnchor.constraint(equalToConstant: 1)
 		])
-	}
-
-
-	// MARK: - Actions
-
-	@objc private func didTapExitButton() {
-		delegate?.closeButtonTapped()
 	}
 
 	// MARK: - Helper Methods

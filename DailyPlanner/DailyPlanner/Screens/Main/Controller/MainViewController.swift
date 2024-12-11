@@ -31,7 +31,6 @@ final class MainViewController: GenericViewController<MainView> {
 
 	private func setupDelegates() {
 		rootView.delegate = self
-		rootView.headerView.delegate = self
 		rootView.footerView.delegate = self
 		rootView.collectionView.dataSource = self
 		rootView.collectionView.delegate = self
@@ -167,16 +166,6 @@ extension MainViewController: CalendarViewDelegate {
 	func dayTapped() {
 		// MARK: use for action when you tap calendar day
 		print("calendar day tapped. reaction from CalendarScreenViewController")
-	}
-}
-
-// MARK: - CalendarScreenHeaderViewDelegate
-
-extension MainViewController: CalendarHeaderViewDelegate {
-	func closeButtonTapped() {
-
-		dismiss(animated: true)
-		print("close button tapped. Reaction from Controller")
 	}
 }
 
