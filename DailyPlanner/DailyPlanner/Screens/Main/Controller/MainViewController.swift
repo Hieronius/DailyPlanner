@@ -24,10 +24,15 @@ final class MainViewController: GenericViewController<MainView> {
 		setupDelegates()
 		updateNumberOfWeeks()
 		setupDayFormatter()
+		setupNavigationBar()
 		rootView.headerView.baseDate = baseDate
 	}
 
 	// MARK: - Private Methods
+
+	private func setupNavigationBar() {
+		title = "Daily Planner"
+	}
 
 	private func setupDelegates() {
 		rootView.delegate = self
@@ -54,6 +59,7 @@ final class MainViewController: GenericViewController<MainView> {
 }
 
 // MARK: - Day Generation
+
 private extension MainViewController {
 
 	// Get actual data for month

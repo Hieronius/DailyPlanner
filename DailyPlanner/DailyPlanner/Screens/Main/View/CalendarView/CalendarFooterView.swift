@@ -5,7 +5,7 @@ protocol CalendarFooterViewDelegate: AnyObject {
 	func nextMonthButtonTapped()
 }
 
-class CalendarFooterView: UIView {
+final class CalendarFooterView: UIView {
 
 	// MARK: - Public Properties
 

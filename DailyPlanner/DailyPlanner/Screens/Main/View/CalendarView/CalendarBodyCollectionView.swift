@@ -1,6 +1,6 @@
 import UIKit
 
-class CalendarBodyCollectionView: UICollectionView {
+final class CalendarBodyCollectionView: UICollectionView {
 
 	// MARK: - Initialization
 

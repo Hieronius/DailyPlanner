@@ -1,6 +1,6 @@
 import UIKit
 
-class CalendarCell: UICollectionViewCell {
+final class CalendarCell: UICollectionViewCell {
 
 	// MARK: - Private Properties
 

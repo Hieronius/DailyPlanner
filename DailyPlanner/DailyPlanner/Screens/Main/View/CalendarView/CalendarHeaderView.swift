@@ -1,6 +1,6 @@
 import UIKit
 
-class CalendarHeaderView: UIView {
+final class CalendarHeaderView: UIView {
 
 	// MARK: - Public Properties
 
