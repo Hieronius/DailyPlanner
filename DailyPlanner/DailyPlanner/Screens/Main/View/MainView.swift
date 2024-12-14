@@ -1,16 +1,8 @@
 import UIKit
 
-// MARK: May be should be removed because i have calendar at the same screen
-protocol CalendarViewDelegate: AnyObject {
-	/// Update the method name to reflect month selection
-	func dayTapped()
-}
-
 final class MainView: UIView {
 
 	// MARK: - Public Properties
-
-	weak var delegate: CalendarViewDelegate?
 
 	var calendarHeaderView: CalendarHeaderView!
 	var calendarCollectionView: CalendarBodyCollectionView!

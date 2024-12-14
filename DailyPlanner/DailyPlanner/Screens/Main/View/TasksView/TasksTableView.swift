@@ -17,6 +17,9 @@ final class TasksTableView: UITableView {
 		backgroundColor = .systemGray6
 		layer.cornerRadius = 15
 		clipsToBounds = true
+
 		register(ToDoCell.self, forCellReuseIdentifier: ToDoCell.reuseIdentifier)
+
+		register(HourHeaderView.self, forHeaderFooterViewReuseIdentifier: HourHeaderView.reuseIdentifier)
 	}
 }

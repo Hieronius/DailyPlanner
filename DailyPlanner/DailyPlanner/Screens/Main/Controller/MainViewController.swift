@@ -4,8 +4,9 @@ final class MainViewController: GenericViewController<MainView> {
 
 	// MARK: - Private Properties
 
-	/// Use this variable or another one as a key for dictionary of daily tasks
-	private let selectedDate: Date? = nil
+	/// Selected date on the calendar to load existing tasks
+	private var selectedDate: Date? = nil
+
 	private lazy var days = generateDaysInMonth(for: baseDate)
 	private var dateFormatter: DateFormatter!
 	private let dateService = DateService.shared
@@ -13,21 +14,14 @@ final class MainViewController: GenericViewController<MainView> {
 
 	private var dataSource: UITableViewDiffableDataSource<HourSection, ToDo>!
 
-//	private var tasks: [ToDo] = [
-//		ToDo(id: 1, title: "title1", description: "description1"),
-//		ToDo(id: 2, title: "title2", description: "description2"),
-//		ToDo(id: 3, title: "title3", description: "description3"),
-//		ToDo(id: 4, title: "title4", description: "description4"),
-//		ToDo(id: 5, title: "title5", description: "description5"),
-//		ToDo(id: 6, title: "title6", description: "description6"),
-//		ToDo(id: 7, title: "title7", description: "description7"),
-//		ToDo(id: 8, title: "title8", description: "description8"),
-//	]
-
 	let todosBySection: [HourSection: [ToDo]] = [
+
 		.hour0: [ToDo(id: 1, title: "Task 1", description: "Description 1", startDate: "Start", endDate: "End", isCompleted: false),
+
 				 ToDo(id: 2, title: "Task 1.1", description: "Description 1.1", startDate: "Start", endDate: "End", isCompleted: false),
+
 				 ToDo(id: 3, title: "Task 1.2", description: "Description 1.2", startDate: "Start", endDate: "End", isCompleted: false),
+				 
 				 ToDo(id: 4, title: "Task 1.3", description: "Description 1.3", startDate: "Start", endDate: "End", isCompleted: false)],
 
 		.hour1: [ToDo(id: 2, title: "Task 2", description: "Description 2", startDate: "Start", endDate: "End", isCompleted: false)]
@@ -49,9 +43,8 @@ final class MainViewController: GenericViewController<MainView> {
 		setupDelegates()
 		updateNumberOfWeeks()
 		setupDayFormatter()
-		setupNavigationBar()
 		setupDataSource()
-		 applySnapshot(todosBySection)
+		applySnapshot(todosBySection)
 		rootView.calendarHeaderView.baseDate = baseDate
 	}
 
@@ -78,11 +71,10 @@ final class MainViewController: GenericViewController<MainView> {
 	}
 
 	private func setupDelegates() {
-		rootView.delegate = self
 		rootView.calendarFooterView.delegate = self
 		rootView.calendarCollectionView.dataSource = self
 		rootView.calendarCollectionView.delegate = self
-		rootView.mainTableView.delegate = self
+		rootView.tasksTableView.delegate = self
 	}
 
 	private func setupDayFormatter() {
@@ -213,15 +205,6 @@ private extension MainViewController {
 	}
 }
 
-// MARK: - CalendarScreenViewDelegate
-
-extension MainViewController: CalendarViewDelegate {
-	func dayTapped() {
-		// MARK: use for action when you tap calendar day
-		print("calendar day tapped. reaction from CalendarScreenViewController")
-	}
-}
-
 // MARK: - CalendarScreenFooterViewDelegate
 
 extension MainViewController: CalendarFooterViewDelegate {
@@ -281,7 +264,8 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
 		didSelectItemAt indexPath: IndexPath
 	) {
 		let day = days[indexPath.row]
-		print(day.date)
+		selectedDate = day.date
+		print(selectedDate)
 		// MARK: place to get tasks for selected date
 	}
 
@@ -301,7 +285,7 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
 extension MainViewController {
 
 	private func setupDataSource() {
-		   dataSource = UITableViewDiffableDataSource<HourSection, ToDo>(tableView: rootView.mainTableView) { (tableView, indexPath, todo) -> UITableViewCell? in
+		   dataSource = UITableViewDiffableDataSource<HourSection, ToDo>(tableView: rootView.tasksTableView) { (tableView, indexPath, todo) -> UITableViewCell? in
 
 			   guard let cell = tableView.dequeueReusableCell(withIdentifier: ToDoCell.reuseIdentifier, for:indexPath) as? ToDoCell else {
 				   return UITableViewCell()
@@ -310,6 +294,7 @@ extension MainViewController {
 			   cell.configure(with: todo)
 			   return cell
 		   }
+
 	   }
 
 	   func applySnapshot(_ itemsBySection:[HourSection:[ToDo]]) {
@@ -329,5 +314,12 @@ extension MainViewController {
 
 extension MainViewController: UITableViewDelegate {
 
-}
+	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+		guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "HourHeaderView") as? HourHeaderView else {
+			return UITableViewHeaderFooterView()
+		}
+		   header.configure(with: HourSection(rawValue: section)?.title ?? "")
+		   return header
+	   }
+	}
 

@@ -19,6 +19,7 @@
 		DD85F1602D0692810061664F /* ToDoRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD85F15F2D0692810061664F /* ToDoRealm.swift */; };
 		DD85F1622D0697070061664F /* Tasks.json in Resources */ = {isa = PBXBuildFile; fileRef = DD85F1612D0697070061664F /* Tasks.json */; };
 		DD85F1642D06AA190061664F /* HourSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD85F1632D06AA190061664F /* HourSection.swift */; };
+		DDAAC3C92D0D1E1900956F1C /* HourHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAAC3C82D0D1E1900956F1C /* HourHeaderView.swift */; };
 		DDABBB502CF976C700AC4CC7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDABBB4F2CF976C700AC4CC7 /* AppDelegate.swift */; };
 		DDABBB522CF976C700AC4CC7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDABBB512CF976C700AC4CC7 /* SceneDelegate.swift */; };
 		DDABBB542CF976C700AC4CC7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDABBB532CF976C700AC4CC7 /* MainViewController.swift */; };
@@ -46,6 +47,7 @@
 		DD85F15F2D0692810061664F /* ToDoRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoRealm.swift; sourceTree = "<group>"; };
 		DD85F1612D0697070061664F /* Tasks.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Tasks.json; sourceTree = "<group>"; };
 		DD85F1632D06AA190061664F /* HourSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourSection.swift; sourceTree = "<group>"; };
+		DDAAC3C82D0D1E1900956F1C /* HourHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourHeaderView.swift; sourceTree = "<group>"; };
 		DDABBB4F2CF976C700AC4CC7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DDABBB512CF976C700AC4CC7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		DDABBB532CF976C700AC4CC7 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -239,6 +241,7 @@
 			children = (
 				DD85F1592D0691D90061664F /* ToDoCell.swift */,
 				DDD5A2A12D09500500F0DB5F /* TasksTableView.swift */,
+				DDAAC3C82D0D1E1900956F1C /* HourHeaderView.swift */,
 			);
 			path = TasksView;
 			sourceTree = "<group>";
@@ -327,6 +330,7 @@
 				DD85F1582D06918E0061664F /* MainView.swift in Sources */,
 				DD85F1562D0691580061664F /* ToDo.swift in Sources */,
 				DD85F15C2D0691E60061664F /* TaskView.swift in Sources */,
+				DDAAC3C92D0D1E1900956F1C /* HourHeaderView.swift in Sources */,
 				DD85F1602D0692810061664F /* ToDoRealm.swift in Sources */,
 				DD7CD0C82D03E13600F34FCC /* JSONHandler.swift in Sources */,
 				DDD5A2972D09320300F0DB5F /* CalendarFooterView.swift in Sources */,
