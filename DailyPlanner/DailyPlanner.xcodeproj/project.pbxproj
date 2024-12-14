@@ -18,12 +18,13 @@
 		DD85F15E2D0691F00061664F /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD85F15D2D0691F00061664F /* TaskViewController.swift */; };
 		DD85F1602D0692810061664F /* ToDoRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD85F15F2D0692810061664F /* ToDoRealm.swift */; };
 		DD85F1622D0697070061664F /* Tasks.json in Resources */ = {isa = PBXBuildFile; fileRef = DD85F1612D0697070061664F /* Tasks.json */; };
-		DD85F1642D06AA190061664F /* TimeSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD85F1632D06AA190061664F /* TimeSlot.swift */; };
+		DD85F1642D06AA190061664F /* HourSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD85F1632D06AA190061664F /* HourSection.swift */; };
 		DDABBB502CF976C700AC4CC7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDABBB4F2CF976C700AC4CC7 /* AppDelegate.swift */; };
 		DDABBB522CF976C700AC4CC7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDABBB512CF976C700AC4CC7 /* SceneDelegate.swift */; };
 		DDABBB542CF976C700AC4CC7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDABBB532CF976C700AC4CC7 /* MainViewController.swift */; };
 		DDABBB592CF976CA00AC4CC7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDABBB582CF976CA00AC4CC7 /* Assets.xcassets */; };
 		DDABBB5C2CF976CA00AC4CC7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDABBB5A2CF976CA00AC4CC7 /* LaunchScreen.storyboard */; };
+		DDC7EBE92D0A8AF700E2A99B /* HourHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC7EBE82D0A8AF700E2A99B /* HourHeaderView.swift */; };
 		DDD5A2932D0931A400F0DB5F /* CalendarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD5A2922D0931A400F0DB5F /* CalendarHeaderView.swift */; };
 		DDD5A2952D0931E200F0DB5F /* CalendarBodyCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD5A2942D0931E200F0DB5F /* CalendarBodyCollectionView.swift */; };
 		DDD5A2972D09320300F0DB5F /* CalendarFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD5A2962D09320300F0DB5F /* CalendarFooterView.swift */; };
@@ -31,6 +32,7 @@
 		DDD5A29B2D09332600F0DB5F /* DateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD5A29A2D09332600F0DB5F /* DateService.swift */; };
 		DDD5A29D2D09334B00F0DB5F /* Day.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD5A29C2D09334B00F0DB5F /* Day.swift */; };
 		DDD5A29F2D09336800F0DB5F /* MonthMetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD5A29E2D09336800F0DB5F /* MonthMetaData.swift */; };
+		DDD5A2A22D09500500F0DB5F /* MainTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD5A2A12D09500500F0DB5F /* MainTableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,13 +46,14 @@
 		DD85F15D2D0691F00061664F /* TaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
 		DD85F15F2D0692810061664F /* ToDoRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoRealm.swift; sourceTree = "<group>"; };
 		DD85F1612D0697070061664F /* Tasks.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Tasks.json; sourceTree = "<group>"; };
-		DD85F1632D06AA190061664F /* TimeSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSlot.swift; sourceTree = "<group>"; };
+		DD85F1632D06AA190061664F /* HourSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourSection.swift; sourceTree = "<group>"; };
 		DDABBB4F2CF976C700AC4CC7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DDABBB512CF976C700AC4CC7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		DDABBB532CF976C700AC4CC7 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		DDABBB582CF976CA00AC4CC7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DDABBB5B2CF976CA00AC4CC7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DDABBB5D2CF976CA00AC4CC7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DDC7EBE82D0A8AF700E2A99B /* HourHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourHeaderView.swift; sourceTree = "<group>"; };
 		DDD5A2902D09116300F0DB5F /* DailyPlanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DailyPlanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDD5A2922D0931A400F0DB5F /* CalendarHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHeaderView.swift; sourceTree = "<group>"; };
 		DDD5A2942D0931E200F0DB5F /* CalendarBodyCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarBodyCollectionView.swift; sourceTree = "<group>"; };
@@ -59,6 +62,7 @@
 		DDD5A29A2D09332600F0DB5F /* DateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateService.swift; sourceTree = "<group>"; };
 		DDD5A29C2D09334B00F0DB5F /* Day.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day.swift; sourceTree = "<group>"; };
 		DDD5A29E2D09336800F0DB5F /* MonthMetaData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthMetaData.swift; sourceTree = "<group>"; };
+		DDD5A2A12D09500500F0DB5F /* MainTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,11 +130,8 @@
 		DD79B8ED2D02AA930014CDE3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				DD85F1552D0691580061664F /* ToDo.swift */,
-				DD85F1632D06AA190061664F /* TimeSlot.swift */,
-				DDD5A29A2D09332600F0DB5F /* DateService.swift */,
-				DDD5A29C2D09334B00F0DB5F /* Day.swift */,
-				DDD5A29E2D09336800F0DB5F /* MonthMetaData.swift */,
+				DDC7EBEB2D0A998300E2A99B /* ToDoModel */,
+				DDC7EBEA2D0A997A00E2A99B /* CalendarModel */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -139,8 +140,8 @@
 			isa = PBXGroup;
 			children = (
 				DDD5A2912D09317F00F0DB5F /* CalendarView */,
+				DDD5A2A02D094F8500F0DB5F /* TasksView */,
 				DD85F1572D06918E0061664F /* MainView.swift */,
-				DD85F1592D0691D90061664F /* ToDoCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -205,6 +206,25 @@
 			path = DailyPlanner;
 			sourceTree = "<group>";
 		};
+		DDC7EBEA2D0A997A00E2A99B /* CalendarModel */ = {
+			isa = PBXGroup;
+			children = (
+				DDD5A29E2D09336800F0DB5F /* MonthMetaData.swift */,
+				DDD5A29A2D09332600F0DB5F /* DateService.swift */,
+				DDD5A29C2D09334B00F0DB5F /* Day.swift */,
+			);
+			path = CalendarModel;
+			sourceTree = "<group>";
+		};
+		DDC7EBEB2D0A998300E2A99B /* ToDoModel */ = {
+			isa = PBXGroup;
+			children = (
+				DD85F1632D06AA190061664F /* HourSection.swift */,
+				DD85F1552D0691580061664F /* ToDo.swift */,
+			);
+			path = ToDoModel;
+			sourceTree = "<group>";
+		};
 		DDD5A2912D09317F00F0DB5F /* CalendarView */ = {
 			isa = PBXGroup;
 			children = (
@@ -214,6 +234,16 @@
 				DDD5A2982D09328A00F0DB5F /* CalendarCell.swift */,
 			);
 			path = CalendarView;
+			sourceTree = "<group>";
+		};
+		DDD5A2A02D094F8500F0DB5F /* TasksView */ = {
+			isa = PBXGroup;
+			children = (
+				DD85F1592D0691D90061664F /* ToDoCell.swift */,
+				DDD5A2A12D09500500F0DB5F /* MainTableView.swift */,
+				DDC7EBE82D0A8AF700E2A99B /* HourHeaderView.swift */,
+			);
+			path = TasksView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -296,14 +326,16 @@
 				DD85F15E2D0691F00061664F /* TaskViewController.swift in Sources */,
 				DDD5A2992D09328A00F0DB5F /* CalendarCell.swift in Sources */,
 				DDABBB542CF976C700AC4CC7 /* MainViewController.swift in Sources */,
+				DDD5A2A22D09500500F0DB5F /* MainTableView.swift in Sources */,
 				DD85F1582D06918E0061664F /* MainView.swift in Sources */,
 				DD85F1562D0691580061664F /* ToDo.swift in Sources */,
 				DD85F15C2D0691E60061664F /* TaskView.swift in Sources */,
+				DDC7EBE92D0A8AF700E2A99B /* HourHeaderView.swift in Sources */,
 				DD85F1602D0692810061664F /* ToDoRealm.swift in Sources */,
 				DD7CD0C82D03E13600F34FCC /* JSONHandler.swift in Sources */,
 				DDD5A2972D09320300F0DB5F /* CalendarFooterView.swift in Sources */,
 				DDD5A29B2D09332600F0DB5F /* DateService.swift in Sources */,
-				DD85F1642D06AA190061664F /* TimeSlot.swift in Sources */,
+				DD85F1642D06AA190061664F /* HourSection.swift in Sources */,
 				DDABBB502CF976C700AC4CC7 /* AppDelegate.swift in Sources */,
 				DDD5A2932D0931A400F0DB5F /* CalendarHeaderView.swift in Sources */,
 				DDD5A29F2D09336800F0DB5F /* MonthMetaData.swift in Sources */,

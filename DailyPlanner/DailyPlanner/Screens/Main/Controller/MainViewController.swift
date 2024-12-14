@@ -4,11 +4,35 @@ final class MainViewController: GenericViewController<MainView> {
 
 	// MARK: - Private Properties
 
+	/// Use this variable or another one as a key for dictionary of daily tasks
 	private let selectedDate: Date? = nil
 	private lazy var days = generateDaysInMonth(for: baseDate)
 	private var dateFormatter: DateFormatter!
 	private let dateService = DateService.shared
 	private var numberOfWeeksInBaseDate = 0
+
+	private var dataSource: UITableViewDiffableDataSource<HourSection, ToDo>!
+
+//	private var tasks: [ToDo] = [
+//		ToDo(id: 1, title: "title1", description: "description1"),
+//		ToDo(id: 2, title: "title2", description: "description2"),
+//		ToDo(id: 3, title: "title3", description: "description3"),
+//		ToDo(id: 4, title: "title4", description: "description4"),
+//		ToDo(id: 5, title: "title5", description: "description5"),
+//		ToDo(id: 6, title: "title6", description: "description6"),
+//		ToDo(id: 7, title: "title7", description: "description7"),
+//		ToDo(id: 8, title: "title8", description: "description8"),
+//	]
+
+	let todosBySection: [HourSection: [ToDo]] = [
+		.hour0: [ToDo(id: 1, title: "Task 1", description: "Description 1", startDate: "Start", endDate: "End", isCompleted: false),
+				 ToDo(id: 2, title: "Task 1.1", description: "Description 1.1", startDate: "Start", endDate: "End", isCompleted: false),
+				 ToDo(id: 3, title: "Task 1.2", description: "Description 1.2", startDate: "Start", endDate: "End", isCompleted: false),
+				 ToDo(id: 4, title: "Task 1.3", description: "Description 1.3", startDate: "Start", endDate: "End", isCompleted: false)],
+
+		.hour1: [ToDo(id: 2, title: "Task 2", description: "Description 2", startDate: "Start", endDate: "End", isCompleted: false)]
+	]
+
 
 	private var baseDate: Date = Date() {
 	  didSet {
@@ -21,24 +45,44 @@ final class MainViewController: GenericViewController<MainView> {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
+		setupNavigationBar()
 		setupDelegates()
 		updateNumberOfWeeks()
 		setupDayFormatter()
 		setupNavigationBar()
-		rootView.headerView.baseDate = baseDate
+		setupDataSource()
+		 applySnapshot(todosBySection)
+		rootView.calendarHeaderView.baseDate = baseDate
 	}
 
 	// MARK: - Private Methods
 
 	private func setupNavigationBar() {
-		title = "Daily Planner"
+
+		let createButton = UIBarButtonItem(
+			title: "New Task +",
+			style: .plain,
+			target: self,
+			action: #selector(createButtonTapped))
+
+		createButton.tintColor = .white
+		navigationItem.rightBarButtonItem = createButton
+	}
+
+	// MARK: Implement new task creation
+
+	@objc private func createButtonTapped() {
+//		let taskScreen = TaskScreenViewController()
+//		navigationController?.pushViewController(taskScreen,
+//												 animated: true)
 	}
 
 	private func setupDelegates() {
 		rootView.delegate = self
-		rootView.footerView.delegate = self
-		rootView.collectionView.dataSource = self
-		rootView.collectionView.delegate = self
+		rootView.calendarFooterView.delegate = self
+		rootView.calendarCollectionView.dataSource = self
+		rootView.calendarCollectionView.delegate = self
+		rootView.mainTableView.delegate = self
 	}
 
 	private func setupDayFormatter() {
@@ -52,9 +96,12 @@ final class MainViewController: GenericViewController<MainView> {
 	}
 
 	private func updateDaysAndReloadCollectionView() {
-		days = generateDaysInMonth(for: baseDate) // Regenerate days array
-		rootView.collectionView.reloadData() // Reload collection view data
-		rootView.headerView.baseDate = baseDate // Update header with current month
+		// Regenerate days array
+		days = generateDaysInMonth(for: baseDate)
+		// Reload collection view data
+		rootView.calendarCollectionView.reloadData()
+		// Update header with current month
+		rootView.calendarHeaderView.baseDate = baseDate
 	}
 }
 
@@ -202,6 +249,7 @@ extension MainViewController: CalendarFooterViewDelegate {
 }
 
 // MARK: - UICollectionViewDataSource
+
 extension MainViewController: UICollectionViewDataSource {
 	func collectionView(
 		_ collectionView: UICollectionView,
@@ -226,6 +274,7 @@ extension MainViewController: UICollectionViewDataSource {
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
+
 extension MainViewController: UICollectionViewDelegateFlowLayout {
 	func collectionView(
 		_ collectionView: UICollectionView,
@@ -233,7 +282,7 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
 	) {
 		let day = days[indexPath.row]
 		print(day.date)
-		// MARK: there i should place method to change color or print info about day statistics
+		// MARK: place to get tasks for selected date
 	}
 
 	func collectionView(
@@ -246,3 +295,39 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
 		return CGSize(width: width, height: height)
 	}
 }
+
+// MARK: - UIDiffableDataSource
+
+extension MainViewController {
+
+	private func setupDataSource() {
+		   dataSource = UITableViewDiffableDataSource<HourSection, ToDo>(tableView: rootView.mainTableView) { (tableView, indexPath, todo) -> UITableViewCell? in
+
+			   guard let cell = tableView.dequeueReusableCell(withIdentifier: ToDoCell.reuseIdentifier, for:indexPath) as? ToDoCell else {
+				   return UITableViewCell()
+			   }
+
+			   cell.configure(with: todo)
+			   return cell
+		   }
+	   }
+
+	   func applySnapshot(_ itemsBySection:[HourSection:[ToDo]]) {
+		   var snapshot = NSDiffableDataSourceSnapshot<HourSection, ToDo>()
+
+		   for section in HourSection.allCases {
+			   snapshot.appendSections([section])
+			   let items = itemsBySection[section] ?? []
+			   snapshot.appendItems(items, toSection: section)
+		   }
+
+		   dataSource.apply(snapshot, animatingDifferences:true)
+	   }
+	}
+
+// MARK: - UITableViewDelegate
+
+extension MainViewController: UITableViewDelegate {
+
+}
+

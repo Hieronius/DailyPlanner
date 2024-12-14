@@ -7,9 +7,6 @@ final class CalendarCell: UICollectionViewCell {
 	private var selectionBackgroundView: UIView!
 	private var numberLabel: UILabel!
 
-	/// The date formatter used for accessibility.
-	private var accessibilityDateFormatter: DateFormatter!
-
 	// MARK: - Public Properties
 
 	static let reuseIdentifier = String(describing: CalendarCell.self)
@@ -27,9 +24,6 @@ final class CalendarCell: UICollectionViewCell {
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
-
-		isAccessibilityElement = true
-		accessibilityTraits = .button
 
 		setupViews()
 	}
@@ -87,14 +81,6 @@ final class CalendarCell: UICollectionViewCell {
 		])
 	}
 
-
-	/// Sets up the date formatter for accessibility.
-	private func setupDateFormatter() {
-		accessibilityDateFormatter = DateFormatter()
-		accessibilityDateFormatter.calendar = Calendar(identifier: .gregorian)
-		accessibilityDateFormatter.setLocalizedDateFormatFromTemplate("EEEE, MMMM d")
-	}
-
 	// MARK: - Layout
 
 	override func layoutSubviews() {
@@ -125,9 +111,6 @@ final class CalendarCell: UICollectionViewCell {
 
 	/// Applies the selected style to the cell.
 	private func applySelectedStyle() {
-		accessibilityTraits.insert(.selected)
-		accessibilityHint = nil
-
 		numberLabel.textColor = isSmallScreenSize ? .systemRed : .white
 		selectionBackgroundView.isHidden = isSmallScreenSize
 	}
@@ -136,9 +119,6 @@ final class CalendarCell: UICollectionViewCell {
 	///
 	/// - Parameter isWithinDisplayedMonth: A Boolean value indicating whether the date is within the displayed month.
 	private func applyDefaultStyle(isWithinDisplayedMonth: Bool) {
-		accessibilityTraits.remove(.selected)
-		accessibilityHint = "Tap to select"
-
 		numberLabel.textColor = isWithinDisplayedMonth ? .label : .secondaryLabel
 		selectionBackgroundView.isHidden = true
 	}
