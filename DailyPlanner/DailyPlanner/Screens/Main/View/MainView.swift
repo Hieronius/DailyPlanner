@@ -1,5 +1,6 @@
 import UIKit
 
+// MARK: May be should be removed because i have calendar at the same screen
 protocol CalendarViewDelegate: AnyObject {
 	/// Update the method name to reflect month selection
 	func dayTapped()
@@ -15,7 +16,7 @@ final class MainView: UIView {
 	var calendarCollectionView: CalendarBodyCollectionView!
 	var calendarFooterView: CalendarFooterView!
 
-	var mainTableView: MainTableView!
+	var tasksTableView: TasksTableView!
 
 	// MARK: - Initialization
 
@@ -92,17 +93,17 @@ final class MainView: UIView {
 	}
 
 	private func setupMainTableView() {
-		   mainTableView = MainTableView()
+		   tasksTableView = TasksTableView()
 
-		   addSubview(mainTableView)
+		   addSubview(tasksTableView)
 
-		   mainTableView.translatesAutoresizingMaskIntoConstraints = false
+		   tasksTableView.translatesAutoresizingMaskIntoConstraints = false
 
 		   NSLayoutConstraint.activate([
-			   mainTableView.topAnchor.constraint(equalTo: calendarFooterView.bottomAnchor, constant: 15),
-			   mainTableView.leadingAnchor.constraint(equalTo: calendarFooterView.leadingAnchor),
-			   mainTableView.trailingAnchor.constraint(equalTo: calendarFooterView.trailingAnchor),
-			   mainTableView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
+			   tasksTableView.topAnchor.constraint(equalTo: calendarFooterView.bottomAnchor, constant: 15),
+			   tasksTableView.leadingAnchor.constraint(equalTo: calendarFooterView.leadingAnchor),
+			   tasksTableView.trailingAnchor.constraint(equalTo: calendarFooterView.trailingAnchor),
+			   tasksTableView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
 		   ])
 	   }
 }

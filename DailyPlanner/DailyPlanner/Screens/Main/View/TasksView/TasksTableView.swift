@@ -1,6 +1,6 @@
 import UIKit
 
-final class MainTableView: UITableView {
+final class TasksTableView: UITableView {
 
 	// MARK: - Initialization
 
