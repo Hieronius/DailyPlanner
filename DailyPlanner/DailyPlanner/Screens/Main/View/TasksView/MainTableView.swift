@@ -15,6 +15,8 @@ final class MainTableView: UITableView {
 
 	private func configureTableView() {
 		backgroundColor = .systemGray6
+		layer.cornerRadius = 15
+		clipsToBounds = true
 		register(ToDoCell.self, forCellReuseIdentifier: ToDoCell.reuseIdentifier)
 	}
 }

@@ -18,6 +18,7 @@ class ToDoCell: UITableViewCell {
 	}
 
 	private func setupView() {
+		backgroundColor = .systemGray6
 		// Configure titleLabel
 		titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
 		contentView.addSubview(titleLabel)
@@ -29,6 +30,7 @@ class ToDoCell: UITableViewCell {
 
 		// Configure checkboxImageView
 		checkboxImageView.contentMode = .scaleAspectFit
+		checkboxImageView.tintColor = .systemRed
 		contentView.addSubview(checkboxImageView)
 
 		// Set constraints for the views
