@@ -1,42 +1,46 @@
 import UIKit
 
+protocol TaskViewDelegate: AnyObject {
+	func doneButtonTapped()
+}
+
 final class TaskView: UIView {
 
-	// back button should do nothing (don't forget about color)
+	// MARK: - Public Properties
 
-	// add spacing to stack view for smooth gaps between elements
-
+	weak var delegate: TaskViewDelegate?
+	
 	let containerView = UIView()
-	let stackView = UIStackView() // may be i need a few internal stacks
+	let stackView = UIStackView()
 
 	let topSpacer = UIView()
 
 	let titleLabel = UILabel()
-	let titleTextField = CustomTextField() // can be empty // add background text/color
+	let titleTextField = CustomTextField()
 
 	let titleSpacer = UIView()
 
 	let descriptionLabel = UILabel()
-	let descriptionTextField = CustomTextField() // can be empty
+	let descriptionTextField = CustomTextField()
 
 	let descriptionSpacer = UIView()
 
 	let startDateLabel = UILabel()
-	let startDatePicker = UIDatePicker() // .now() by default // change tint color
+	let startDatePicker = UIDatePicker()
 
 	let startDateSpacer = UIView()
 
 	let endDateLabel = UILabel()
-	let endDatePicker = UIDatePicker() // +1 hour of the start date // change to date picker
+	let endDatePicker = UIDatePicker()
 
 	let endDateSpacer = UIView()
 
 	let doneLabel = UILabel()
-	let doneSwitch = UISwitch() // Detail
+	let doneSwitch = UISwitch()
 
 	let bottomSpacer = UIView()
 
-	let doneButton = UIButton() // Done/Create
+	let doneButton = UIButton() // set delegate to controller (collect task view -> update Realm)
 
 	// MARK: - Initialization
 
@@ -178,11 +182,11 @@ final class TaskView: UIView {
 		descriptionTextField.backgroundColor = .systemGray5
 		descriptionTextField.layer.cornerRadius = 10
 		descriptionTextField.clipsToBounds = true
-		descriptionTextField.text
 
 		startDateLabel.font = .systemFont(ofSize: 20, weight: .bold)
 
 		startDatePicker.preferredDatePickerStyle = .compact
+		startDatePicker.tintColor = .systemRed
 
 		endDateLabel.font = .systemFont(ofSize: 20, weight: .bold)
 
@@ -190,6 +194,8 @@ final class TaskView: UIView {
 		endDatePicker.isUserInteractionEnabled = false
 
 		doneLabel.font = .systemFont(ofSize: 20, weight: .bold)
+
+		doneSwitch.onTintColor = .systemRed
 
 		doneButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
 		doneButton.backgroundColor = .systemRed
@@ -225,6 +231,14 @@ final class TaskView: UIView {
 			.font: UIFont.systemFont(ofSize: 16) // Placeholder font size
 		]
 		textField.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
+	}
+
+	func setupDoneButton() {
+		doneButton.addTarget(self, action: #selector(didDoneButtonTapped), for: .touchUpInside)
+	}
+
+	@objc private func didDoneButtonTapped() {
+		delegate?.doneButtonTapped()
 	}
 
 }
