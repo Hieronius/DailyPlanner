@@ -12,7 +12,6 @@ final class CalendarHeaderView: UIView {
 	var baseDate = Date() {
 		didSet {
 			monthLabel.text = dateFormatter.string(from: baseDate)
-			print("change header")
 		}
 	}
 
@@ -64,8 +63,6 @@ final class CalendarHeaderView: UIView {
 		monthLabel = UILabel()
 		monthLabel.font = .systemFont(ofSize: 26, weight: .bold)
 		monthLabel.text = "Month"
-		monthLabel.accessibilityTraits = .header
-		monthLabel.isAccessibilityElement = true
 
 		addSubview(monthLabel)
 	}
