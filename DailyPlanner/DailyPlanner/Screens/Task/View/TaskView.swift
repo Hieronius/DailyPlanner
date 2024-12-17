@@ -188,11 +188,15 @@ final class TaskView: UIView {
 		startDateLabel.font = .systemFont(ofSize: 20, weight: .bold)
 
 		startDatePicker.preferredDatePickerStyle = .compact
+		startDatePicker.calendar = Calendar(identifier: .gregorian)
+		startDatePicker.locale = Locale(identifier: "en_GB")
 		startDatePicker.tintColor = .systemRed
 
 		endDateLabel.font = .systemFont(ofSize: 20, weight: .bold)
 
 		endDatePicker.preferredDatePickerStyle = .compact
+		endDatePicker.calendar = Calendar(identifier: .gregorian)
+		endDatePicker.locale = Locale(identifier: "en_GB")
 		endDatePicker.isUserInteractionEnabled = false
 
 		doneLabel.font = .systemFont(ofSize: 20, weight: .bold)
