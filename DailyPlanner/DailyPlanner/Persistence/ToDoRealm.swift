@@ -9,8 +9,8 @@ final class ToDoRealm: Object {
 	@Persisted var id: UUID
 	@Persisted var title: String
 	@Persisted var discription: String
-	@Persisted var startDate: Date
-	@Persisted var endDate: Date
+	@Persisted var startDate: Date?
+	@Persisted var endDate: Date?
 	@Persisted var isCompleted: Bool
 
 	// MARK: - Initialization
@@ -19,8 +19,8 @@ final class ToDoRealm: Object {
 		id: UUID,
 		title: String,
 		discription: String,
-		startDate: Date,
-		endDate: Date,
+		startDate: Date?,
+		endDate: Date?,
 		isCompleted: Bool
 	) {
 
