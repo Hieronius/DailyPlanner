@@ -5,7 +5,8 @@ final class MainViewController: GenericViewController<MainView> {
 	// MARK: - Private Properties
 
 	/// Selected date on the calendar to load existing tasks
-	private var selectedDate: Date? = nil
+	lazy var selectedDate = Date()
+	lazy var selectedDateCellIndexPath: IndexPath? = nil
 
 	private lazy var days = generateDaysInMonth(for: baseDate)
 	private var dateFormatter: DateFormatter!
@@ -16,15 +17,15 @@ final class MainViewController: GenericViewController<MainView> {
 
 	let todosBySection: [HourSection: [ToDo]] = [
 
-		.hour0: [ToDo(id: 1, title: "Task 1", description: "Description 1", startDate: "Start", endDate: "End", isCompleted: false),
+		.hour0: [ToDo(id: UUID(), title: "Task 1", description: "Description 1", startDate: .now, endDate: .now, isCompleted: false),
 
-				 ToDo(id: 2, title: "Task 1.1", description: "Description 1.1", startDate: "Start", endDate: "End", isCompleted: false),
+				 ToDo(id: UUID(), title: "Task 1.1", description: "Description 1.1", startDate: .now, endDate: .now, isCompleted: false),
 
-				 ToDo(id: 3, title: "Task 1.2", description: "Description 1.2", startDate: "Start", endDate: "End", isCompleted: false),
+				 ToDo(id: UUID(), title: "Task 1.2", description: "Description 1.2", startDate: .now, endDate: .now, isCompleted: false),
 				 
-				 ToDo(id: 4, title: "Task 1.3", description: "Description 1.3", startDate: "Start", endDate: "End", isCompleted: false)],
+				 ToDo(id: UUID(), title: "Task 1.3", description: "Description 1.3", startDate: .now, endDate: .now, isCompleted: false)],
 
-		.hour1: [ToDo(id: 2, title: "Task 2", description: "Description 2", startDate: "Start", endDate: "End", isCompleted: false)]
+		.hour1: [ToDo(id: UUID(), title: "Task 2", description: "Description 2", startDate: .now, endDate: .now, isCompleted: false)]
 	]
 
 
@@ -34,7 +35,7 @@ final class MainViewController: GenericViewController<MainView> {
 	  }
 	}
 
-	// MARK: - Initialization
+	// MARK: - Life Cycle
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -65,9 +66,9 @@ final class MainViewController: GenericViewController<MainView> {
 	// MARK: Implement new task creation
 
 	@objc private func createButtonTapped() {
-//		let taskScreen = TaskScreenViewController()
-//		navigationController?.pushViewController(taskScreen,
-//												 animated: true)
+		let taskScreen = TaskViewController(screenMode: .newTask)
+		navigationController?.pushViewController(taskScreen,
+												 animated: true)
 	}
 
 	private func setupDelegates() {
@@ -90,11 +91,21 @@ final class MainViewController: GenericViewController<MainView> {
 	private func updateDaysAndReloadCollectionView() {
 		// Regenerate days array
 		days = generateDaysInMonth(for: baseDate)
+
+		// Set selected date to today if it's nil
+		if selectedDate == nil {
+			selectedDate = Date()
+			selectedDateCellIndexPath = IndexPath(row: days.firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: Date()) }) ?? 0, section: 0)
+			days[selectedDateCellIndexPath?.row ?? 0].isSelected = true
+		}
+
 		// Reload collection view data
 		rootView.calendarCollectionView.reloadData()
+
 		// Update header with current month
 		rootView.calendarHeaderView.baseDate = baseDate
 	}
+
 }
 
 // MARK: - Day Generation
@@ -148,6 +159,12 @@ private extension MainViewController {
 			}
 		days += generateStartOfNextMonth(using: firstDayOfMonth)
 
+		// Find and set today's index path if it matches the base date
+			if Calendar.current.isDate(baseDate, inSameDayAs: Date()) {
+				if let todayIndex = days.firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: Date()) }) {
+					selectedDateCellIndexPath = IndexPath(row: todayIndex, section: 0)
+				}
+			}
 		return days
 	}
 
@@ -162,7 +179,6 @@ private extension MainViewController {
 			to: baseDate)
 		?? baseDate
 
-		// An error here
 		return Day(
 			date: date,
 			number: dateFormatter.string(from: date),
@@ -259,14 +275,30 @@ extension MainViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegateFlowLayout
 
 extension MainViewController: UICollectionViewDelegateFlowLayout {
+
 	func collectionView(
 		_ collectionView: UICollectionView,
 		didSelectItemAt indexPath: IndexPath
 	) {
-		let day = days[indexPath.row]
-		selectedDate = day.date
-		print(selectedDate)
-		// MARK: place to get tasks for selected date
+
+		// Deselect previous cell if any
+			if let previousIndexPath = selectedDateCellIndexPath {
+				if let previousCell = collectionView.cellForItem(at: previousIndexPath) as? CalendarCell {
+					previousCell.isSelectedCell = false
+				}
+			}
+
+			// Select new cell
+			guard let cell = collectionView.cellForItem(at: indexPath) as? CalendarCell else { return }
+			cell.isSelectedCell = true
+
+			// Update selected date and index path
+			let day = days[indexPath.row]
+			selectedDate = day.date
+			selectedDateCellIndexPath = indexPath
+
+			print(selectedDate ?? "No date selected")
+		print(selectedDateCellIndexPath)
 	}
 
 	func collectionView(
