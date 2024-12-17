@@ -4,7 +4,7 @@ final class CalendarCell: UICollectionViewCell {
 
 	// MARK: - Private Properties
 
-	private var selectionBackgroundView: UIView!
+	var selectionBackgroundView: UIView!
 	private var numberLabel: UILabel!
 
 	// MARK: - Public Properties
@@ -17,6 +17,14 @@ final class CalendarCell: UICollectionViewCell {
 			guard let day = day else { return }
 			numberLabel.text = day.number
 			updateSelectionStatus()
+		}
+	}
+
+	// Property to track whether the cell is selected
+	var isSelectedCell: Bool = false {
+		didSet {
+			selectionBackgroundView.isHidden = !isSelectedCell
+			numberLabel.textColor = isSelectedCell ? (isSmallScreenSize ? .systemRed : .white) : (day?.isWithinDisplayedMonth == true ? .label : .secondaryLabel)
 		}
 	}
 
@@ -42,6 +50,7 @@ final class CalendarCell: UICollectionViewCell {
 	}
 
 	private func setupBackground() {
+		
 		selectionBackgroundView = UIView()
 		selectionBackgroundView.clipsToBounds = true
 		selectionBackgroundView.backgroundColor = .systemRed
@@ -52,6 +61,7 @@ final class CalendarCell: UICollectionViewCell {
 	}
 
 	private func setupNumberLabel() {
+
 		numberLabel = UILabel()
 		numberLabel.translatesAutoresizingMaskIntoConstraints = false
 		numberLabel.textAlignment = .center
