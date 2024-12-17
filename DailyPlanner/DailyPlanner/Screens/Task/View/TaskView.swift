@@ -159,6 +159,8 @@ final class TaskView: UIView {
 
 	private func setupAppearance() {
 
+		backgroundColor = .systemBackground
+
 		containerView.backgroundColor = .systemGray6
 
 		containerView.layer.cornerRadius = 15
