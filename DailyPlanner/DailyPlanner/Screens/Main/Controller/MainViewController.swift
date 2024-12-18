@@ -51,6 +51,22 @@ final class MainViewController: GenericViewController<MainView> {
 
 	// MARK: - Private Methods
 
+	private func filterToDosByHour(todos: [ToDo], hour: Int) -> [ToDo] {
+
+		let calendar = Calendar.current
+
+		let filteredTasks = todos.filter { todo in
+
+			guard let startDate = todo.startDate else { return false }
+			let components = calendar.dateComponents([.hour], from: startDate)
+			return components.hour == hour
+		}
+
+		return filteredTasks
+	}
+
+	// MARK: - Setup Navigation Bar
+
 	private func setupNavigationBar() {
 
 		let createButton = UIBarButtonItem(
