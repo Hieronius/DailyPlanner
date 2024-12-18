@@ -6,7 +6,7 @@ final class ToDoRealm: Object {
 
 	// MARK: - Public Properties
 
-	@Persisted var id: UUID
+	@Persisted(primaryKey: true) var id: UUID
 	@Persisted var title: String
 	@Persisted var discription: String
 	@Persisted var startDate: Date?
