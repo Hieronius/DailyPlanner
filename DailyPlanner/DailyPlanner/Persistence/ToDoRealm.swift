@@ -33,3 +33,18 @@ final class ToDoRealm: Object {
 		self.isCompleted = isCompleted
 	}
 }
+
+// MARK: - Convertion from `ToDo`
+
+extension ToDoRealm {
+
+	convenience init(_ toDo: ToDo) {
+		self.init()
+		self.id = toDo.id
+		self.title = toDo.title
+		self.discription = toDo.description
+		self.startDate = toDo.startDate
+		self.endDate = toDo.endDate
+		self.isCompleted = toDo.isCompleted
+	}
+}
