@@ -2,16 +2,22 @@ import UIKit
 
 final class TaskViewController: GenericViewController<TaskView> {
 
-	// MARK: - Public Propertied
+	// MARK: - Public Properties
 
 	var screenMode: TaskScreenMode
 	var displayedTask: ToDo? // may be try didSet/WillGet
 	// how to pass UUID of the task here and load task from Realm?
 
+	// MARK: - Private Properties
+
+	private let dataManager: RealmDataManagerProtocol
+
 	// MARK: - Initialization
 
-	init(screenMode: TaskScreenMode) {
+	init(screenMode: TaskScreenMode,
+		 dataManager: RealmDataManagerProtocol) {
 		self.screenMode = screenMode
+		self.dataManager = dataManager
 		super.init(nibName: nil, bundle: nil)
 		// setup View accordingly
 	}
