@@ -2,20 +2,16 @@ import UIKit
 
 final class MainViewController: GenericViewController<MainView> {
 
-	// MARK: - Private Properties
+	// MARK: - Public Properties
 
 	/// Selected date on the calendar to load existing tasks
 	var selectedDate = Date()
+
+	/// An exact position of selected date on the screen
 	var selectedDateCellIndexPath: IndexPath?
 
-	private lazy var days = generateDaysInMonth(for: baseDate)
-	private var dateFormatter: DateFormatter!
-	private let dateService = DateService.shared
-	private var numberOfWeeksInBaseDate = 0
-
-	private var dataSource: UITableViewDiffableDataSource<HourSection, ToDo>!
-
-	let todosBySection: [HourSection: [ToDo]] = [
+	/// List of tasks filtered by it's hour time stamp
+	var todosBySection: [HourSection: [ToDo]] = [
 
 		.hour0: [ToDo(id: UUID(), title: "Task 1", description: "Description 1", startDate: .now, endDate: .now, isCompleted: false),
 
@@ -28,11 +24,33 @@ final class MainViewController: GenericViewController<MainView> {
 		.hour1: [ToDo(id: UUID(), title: "Task 2", description: "Description 2", startDate: .now, endDate: .now, isCompleted: false)]
 	]
 
+	// MARK: - Private Properties
+
+	private let dataManager: RealmDataManagerProtocol
+
+	private lazy var days = generateDaysInMonth(for: baseDate)
+	private var dateFormatter: DateFormatter!
+	private let dateService = DateService.shared
+	private var numberOfWeeksInBaseDate = 0
+
+	private var dataSource: UITableViewDiffableDataSource<HourSection, ToDo>!
+
 
 	private var baseDate: Date = Date() {
 	  didSet {
 		updateNumberOfWeeks()
 	  }
+	}
+
+	// MARK: - Initialization
+
+	init(dataManager: RealmDataManagerProtocol) {
+		self.dataManager = dataManager
+		super.init(nibName: nil, bundle: nil)
+	}
+
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
 	}
 
 	// MARK: - Life Cycle
@@ -82,7 +100,7 @@ final class MainViewController: GenericViewController<MainView> {
 	// MARK: Implement new task creation
 
 	@objc private func createButtonTapped() {
-		let taskScreen = TaskViewController(screenMode: .newTask)
+		let taskScreen = TaskViewController(screenMode: .newTask, dataManager: dataManager)
 		navigationController?.pushViewController(taskScreen,
 												 animated: true)
 	}
