@@ -1,6 +1,10 @@
 import Foundation
 import RealmSwift
 
+// Add extension to ToDo and ToDoRealm model to convert from one to other
+// use guard to unwrap realm object
+// use writeAsync to avoid loading MainThread with operations
+
 /// Protocol for implementation of the manager to work with Realm Data Storage
 protocol RealmDataManagerProtocol: AnyObject {
 
@@ -25,9 +29,19 @@ final class RealmDataManager: RealmDataManagerProtocol {
 
 	// MARK: - Private Properties
 
-	private let realm = try! Realm()
+	private let realm: Realm
 
-	// MARK: - Public Properties
+	// MARK: - Initialization
+
+	init() throws {
+		do {
+			self.realm = try Realm()
+		} catch {
+			throw error
+		}
+	}
+
+	// MARK: - Public Methods
 
 	/// Get all stored tasks for specific day
 	func loadDailyTasks(date: Date) -> [ToDo] {
