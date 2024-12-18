@@ -10,12 +10,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 		window = UIWindow(windowScene: windowScene)
 
-		let rootVC = MainViewController()
-		let NavVC = UINavigationController(rootViewController: rootVC)
+		do {
+			let realmDataManager = try RealmDataManager()
+			let rootVC = MainViewController(dataManager: realmDataManager)
+			let NavVC = UINavigationController(rootViewController: rootVC)
 
-		window?.rootViewController = NavVC
+			guard let window else { return }
 
-		window?.makeKeyAndVisible()
+			window.rootViewController = NavVC
+
+			window.makeKeyAndVisible()
+		} catch {
+			print("Failed to initialize RealmDataManager", error.localizedDescription)
+		}
 	}
 
 	func sceneDidDisconnect(_ scene: UIScene) {
