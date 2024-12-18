@@ -1,8 +1,6 @@
 import Foundation
 import RealmSwift
 
-// Add extension to ToDo and ToDoRealm model to convert from one to other
-// use guard to unwrap realm object
 // use writeAsync to avoid loading MainThread with operations
 
 /// Protocol for implementation of the manager to work with Realm Data Storage
@@ -14,11 +12,8 @@ protocol RealmDataManagerProtocol: AnyObject {
 	/// Load only selected task
 	func loadSelectedTask(id: UUID) -> ToDo?
 
-	///	Save a new task
-	func saveTask(_ task: ToDo)
-
-	/// Make changes with selected task and update in Realm
-	func editTask(_ task: ToDo)
+	/// Save or update a task
+	func saveOrUpdateTask(_ task: ToDo)
 
 	/// Remove selected task
 	func deleteTask(_ task: ToDo)
@@ -59,12 +54,7 @@ final class RealmDataManager: RealmDataManagerProtocol {
 
 		let tasks: [ToDo] = realmTasks.map { realmTask in
 
-			return ToDo(id: realmTask.id,
-						title: realmTask.title,
-						description: realmTask.description,
-						startDate: realmTask.startDate,
-						endDate: realmTask.endDate,
-						isCompleted: realmTask.isCompleted)
+			return ToDo.init(object: realmTask)
 		}
 
 		return tasks
@@ -77,43 +67,20 @@ final class RealmDataManager: RealmDataManagerProtocol {
 												forPrimaryKey: id)
 		else { return nil }
 
-		let task = ToDo(id: realmTask.id,
-								title: realmTask.title,
-								description: realmTask.discription,
-								startDate: realmTask.startDate,
-								endDate: realmTask.endDate,
-								isCompleted: realmTask.isCompleted)
+		let task = ToDo.init(object: realmTask)
 		return task
 	}
 
-	///	Save a new task
-	func saveTask(_ task: ToDo) {
+	/// Save or update a task
+	func saveOrUpdateTask(_ task: ToDo) {
+		let realmTask = ToDoRealm(task) // Convert ToDo to ToDoRealm
 
-		let realmTask = ToDoRealm(id: task.id,
-								  title: task.title,
-								  discription: task.description,
-								  startDate: task.startDate,
-								  endDate: task.endDate,
-								  isCompleted: task.isCompleted)
-
-		try! realm.write {
-			realm.add(realmTask)
-		}
-
-	}
-
-	/// Make changes with selected task and update in Realm
-	func editTask(_ task: ToDo) {
-
-		guard let realmTask = realm.object(ofType: ToDoRealm.self, forPrimaryKey: task.id)
-		else { return }
-
-		try! realm.write {
-			realmTask.title = task.title
-			realmTask.discription = task.description
-			realmTask.startDate = task.startDate
-			realmTask.endDate = task.endDate
-			realmTask.isCompleted = task.isCompleted
+		do {
+			try realm.write {
+				realm.add(realmTask, update: .all)
+			}
+		} catch {
+			print("Failed to save or update task: \(error.localizedDescription)")
 		}
 	}
 
@@ -123,8 +90,12 @@ final class RealmDataManager: RealmDataManagerProtocol {
 		guard let realmTask = realm.object(ofType: ToDoRealm.self, forPrimaryKey: task.id)
 		else { return }
 
-		try! realm.write {
-			realm.delete(realmTask)
+		do {
+			try realm.write {
+				realm.delete(realmTask)
+			}
+		} catch {
+			print("Failed to delete task: \(error.localizedDescription)")
 		}
 	}
 
