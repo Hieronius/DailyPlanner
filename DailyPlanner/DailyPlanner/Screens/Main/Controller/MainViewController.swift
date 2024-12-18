@@ -5,8 +5,8 @@ final class MainViewController: GenericViewController<MainView> {
 	// MARK: - Private Properties
 
 	/// Selected date on the calendar to load existing tasks
-	lazy var selectedDate = Date()
-	lazy var selectedDateCellIndexPath: IndexPath? = nil
+	var selectedDate = Date()
+	var selectedDateCellIndexPath: IndexPath?
 
 	private lazy var days = generateDaysInMonth(for: baseDate)
 	private var dateFormatter: DateFormatter!
@@ -296,6 +296,8 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
 			let day = days[indexPath.row]
 			selectedDate = day.date
 			selectedDateCellIndexPath = indexPath
+
+		// MARK: Fetch tasks from Realm and pass to DataSource via local array of tasks
 
 			print(selectedDate ?? "No date selected")
 		print(selectedDateCellIndexPath)
