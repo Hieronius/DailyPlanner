@@ -10,19 +10,8 @@ final class MainViewController: GenericViewController<MainView> {
 	/// An exact position of selected date on the screen
 	var selectedDateCellIndexPath: IndexPath?
 
-	/// List of tasks filtered by it's hour time stamp
-	var todosBySection: [HourSection: [ToDo]] = [
-
-		.hour0: [ToDo(id: UUID(), title: "Task 1", description: "Description 1", startDate: .now, endDate: .now, isCompleted: false),
-
-				 ToDo(id: UUID(), title: "Task 1.1", description: "Description 1.1", startDate: .now, endDate: .now, isCompleted: false),
-
-				 ToDo(id: UUID(), title: "Task 1.2", description: "Description 1.2", startDate: .now, endDate: .now, isCompleted: false),
-				 
-				 ToDo(id: UUID(), title: "Task 1.3", description: "Description 1.3", startDate: .now, endDate: .now, isCompleted: false)],
-
-		.hour1: [ToDo(id: UUID(), title: "Task 2", description: "Description 2", startDate: .now, endDate: .now, isCompleted: false)]
-	]
+	/// Populate from Realm
+	var dailyVisibleTasks: [ToDo] = []
 
 	// MARK: - Private Properties
 
@@ -33,7 +22,7 @@ final class MainViewController: GenericViewController<MainView> {
 	private let dateService = DateService.shared
 	private var numberOfWeeksInBaseDate = 0
 
-	private var dataSource: UITableViewDiffableDataSource<HourSection, ToDo>!
+	private var dataSource: UITableViewDiffableDataSource<Int, ToDo>!
 
 
 	private var baseDate: Date = Date() {
@@ -58,29 +47,72 @@ final class MainViewController: GenericViewController<MainView> {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
+		// Add one random task for each hour of the day (0-23)
+		for hour in 0..<24 {
+			let randomTask = generateRandomTask(for: hour)
+			dailyVisibleTasks.append(randomTask)
+		}
+
 		setupNavigationBar()
 		setupDelegates()
 		updateNumberOfWeeks()
 		setupDayFormatter()
 		setupDataSource()
-		applySnapshot(todosBySection)
+		applySnapshot()
 		rootView.calendarHeaderView.baseDate = baseDate
+	}
+
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(true)
+
+		// MARK: DataManager.loadDailyTasks()
+		// And may be filter them by hour
+
+		// filterToDosByHour? -> TableView?
 	}
 
 	// MARK: - Private Methods
 
-	private func filterToDosByHour(todos: [ToDo], hour: Int) -> [ToDo] {
 
+	// MARK: TODO - REMOVE BEFORE PUBLISIGH APP
+	// Function to generate a random task for a specific hour
+	func generateRandomTask(for hour: Int) -> ToDo {
 		let calendar = Calendar.current
+		var components = calendar.dateComponents([.year, .month, .day], from: Date())
+		components.hour = hour
 
-		let filteredTasks = todos.filter { todo in
-
-			guard let startDate = todo.startDate else { return false }
-			let components = calendar.dateComponents([.hour], from: startDate)
-			return components.hour == hour
+		guard let startDate = calendar.date(from: components) else {
+			fatalError("Could not create date for hour \(hour)")
 		}
 
-		return filteredTasks
+		// Create a random title and description
+		let randomTitle = "Random Task \(hour)"
+		let randomDescription = "This is a randomly generated task for hour \(hour)."
+
+		// End date is set to one hour after the start date
+		let endDate = startDate.addingTimeInterval(3600) // 1 hour later
+
+		return ToDo(id: UUID(), title: randomTitle, description: randomDescription, startDate: startDate, endDate: endDate, isCompleted: false)
+	}
+
+	/// Method to filter tasks by it's start date and populate accordingly to result
+	private func groupTasksByHour(todos: [ToDo]) -> [Int: [ToDo]] {
+
+		var groupedTasks = [Int: [ToDo]]()
+		let calendar = Calendar.current
+
+		for todo in todos {
+			guard let startDate = todo.startDate else { continue }
+			let hour = calendar.component(.hour, from: startDate)
+
+			if groupedTasks[hour] != nil {
+				groupedTasks[hour]?.append(todo)
+			} else {
+				groupedTasks[hour] = [todo]
+			}
+		}
+
+		return groupedTasks
 	}
 
 	// MARK: - Setup Navigation Bar
@@ -100,12 +132,14 @@ final class MainViewController: GenericViewController<MainView> {
 	// MARK: Implement new task creation
 
 	@objc private func createButtonTapped() {
+
 		let taskScreen = TaskViewController(screenMode: .newTask, dataManager: dataManager)
 		navigationController?.pushViewController(taskScreen,
 												 animated: true)
 	}
 
 	private func setupDelegates() {
+
 		rootView.calendarFooterView.delegate = self
 		rootView.calendarCollectionView.dataSource = self
 		rootView.calendarCollectionView.delegate = self
@@ -353,7 +387,7 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
 extension MainViewController {
 
 	private func setupDataSource() {
-		   dataSource = UITableViewDiffableDataSource<HourSection, ToDo>(tableView: rootView.tasksTableView) { (tableView, indexPath, todo) -> UITableViewCell? in
+		   dataSource = UITableViewDiffableDataSource<Int, ToDo>(tableView: rootView.tasksTableView) { (tableView, indexPath, todo) -> UITableViewCell? in
 
 			   guard let cell = tableView.dequeueReusableCell(withIdentifier: ToDoCell.reuseIdentifier, for:indexPath) as? ToDoCell else {
 				   return UITableViewCell()
@@ -365,17 +399,20 @@ extension MainViewController {
 
 	   }
 
-	   func applySnapshot(_ itemsBySection:[HourSection:[ToDo]]) {
-		   var snapshot = NSDiffableDataSourceSnapshot<HourSection, ToDo>()
+	func applySnapshot() {
+		let groupedTasks = groupTasksByHour(todos: dailyVisibleTasks)
+		var snapshot = NSDiffableDataSourceSnapshot<Int, ToDo>()
 
-		   for section in HourSection.allCases {
-			   snapshot.appendSections([section])
-			   let items = itemsBySection[section] ?? []
-			   snapshot.appendItems(items, toSection: section)
-		   }
+		for hour in 0..<24 {
+			snapshot.appendSections([hour])
+			if let tasksForHour = groupedTasks[hour] {
+				snapshot.appendItems(tasksForHour, toSection: hour)
+			}
+		}
 
-		   dataSource.apply(snapshot, animatingDifferences:true)
-	   }
+		dataSource.apply(snapshot, animatingDifferences: true)
+	}
+
 	}
 
 // MARK: - UITableViewDelegate
@@ -383,11 +420,13 @@ extension MainViewController {
 extension MainViewController: UITableViewDelegate {
 
 	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-		guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "HourHeaderView") as? HourHeaderView else {
+		guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: HourHeaderView.reuseIdentifier) as? HourHeaderView else {
 			return UITableViewHeaderFooterView()
 		}
-		   header.configure(with: HourSection(rawValue: section)?.title ?? "")
-		   return header
-	   }
+
+		header.configure(with: String(format: "%02d:00", section))
+		return header
 	}
+}
+
 
