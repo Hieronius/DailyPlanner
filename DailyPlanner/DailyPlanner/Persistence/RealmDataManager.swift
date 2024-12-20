@@ -1,7 +1,7 @@
 import Foundation
 import RealmSwift
 
-// use writeAsync to avoid loading MainThread with operations
+// MARK: use writeAsync to avoid loading MainThread with operations
 
 /// Protocol for implementation of the manager to work with Realm Data Storage
 protocol RealmDataManagerProtocol: AnyObject {
@@ -17,6 +17,9 @@ protocol RealmDataManagerProtocol: AnyObject {
 
 	/// Remove selected task
 	func deleteTask(_ task: ToDo)
+
+	/// Delete all stored tasks
+	func deleteAllTasks()
 }
 
 /// Implementation of the manager to work with Realm Data Storage
@@ -40,21 +43,22 @@ final class RealmDataManager: RealmDataManagerProtocol {
 
 	/// Get all stored tasks for specific day
 	func loadDailyTasks(date: Date) -> [ToDo] {
-
 		let calendar = Calendar.current
-		let dateComponents = calendar.dateComponents([.year, .month, .day], from: date)
 
-		// Create a predicate that matches tasks with the specified year, month, and day
-		let predicate = NSPredicate(format: "year(startDate) == %d AND month(startDate) == %d AND day(startDate) == %d",
-									dateComponents.year!,
-									dateComponents.month!,
-									dateComponents.day!)
+		// Get the start and end of the day
+		guard let startOfDay = calendar.date(from: calendar.dateComponents([.year, .month, .day], from: date)),
+			  let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay) else {
+			return []
+		}
+
+		// Create a predicate that matches tasks with startDate within the specified range
+		let predicate = NSPredicate(format: "startDate >= %@ AND startDate < %@", startOfDay as NSDate, endOfDay as NSDate)
 
 		let realmTasks = realm.objects(ToDoRealm.self).filter(predicate)
 
+		// Convert Realm objects to ToDo models
 		let tasks: [ToDo] = realmTasks.map { realmTask in
-
-			return ToDo.init(object: realmTask)
+			return ToDo(object: realmTask)
 		}
 
 		return tasks
@@ -99,4 +103,15 @@ final class RealmDataManager: RealmDataManagerProtocol {
 		}
 	}
 
+	/// Delete all stored tasks
+	func deleteAllTasks() {
+
+		do {
+			try realm.write {
+				realm.deleteAll()
+			}
+		} catch {
+			print("Failed to erase the storage")
+		}
+	}
 }
