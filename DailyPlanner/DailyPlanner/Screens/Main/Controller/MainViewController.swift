@@ -16,6 +16,9 @@ final class MainViewController: GenericViewController<MainView> {
 	// MARK: - Private Properties
 
 	private let dataManager: RealmDataManagerProtocol
+	private let jsonHandler: JSONHandlerProtocol
+
+	private var isInitialAppLaunch = true
 
 	private lazy var days = generateDaysInMonth(for: baseDate)
 	private var dateFormatter: DateFormatter!
@@ -33,8 +36,11 @@ final class MainViewController: GenericViewController<MainView> {
 
 	// MARK: - Initialization
 
-	init(dataManager: RealmDataManagerProtocol) {
+	init(dataManager: RealmDataManagerProtocol,
+		 jsonHandler: JSONHandlerProtocol) {
+
 		self.dataManager = dataManager
+		self.jsonHandler = jsonHandler
 		super.init(nibName: nil, bundle: nil)
 	}
 
@@ -47,53 +53,29 @@ final class MainViewController: GenericViewController<MainView> {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		// Add one random task for each hour of the day (0-23)
-		for hour in 0..<24 {
-			let randomTask = generateRandomTask(for: hour)
-			dailyVisibleTasks.append(randomTask)
-		}
-
 		setupNavigationBar()
 		setupDelegates()
 		updateNumberOfWeeks()
 		setupDayFormatter()
 		setupDataSource()
-		applySnapshot()
 		rootView.calendarHeaderView.baseDate = baseDate
+
+		dailyVisibleTasks = dataManager.loadDailyTasks(date: selectedDate)
+		applySnapshot()
 	}
 
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(true)
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(true)
 
-		// MARK: DataManager.loadDailyTasks()
-		// And may be filter them by hour
+		if !isInitialAppLaunch {
+			dailyVisibleTasks = dataManager.loadDailyTasks(date: selectedDate)
+			applySnapshot()
+		}
 
-		// filterToDosByHour? -> TableView?
+		isInitialAppLaunch = false
 	}
 
 	// MARK: - Private Methods
-
-
-	// MARK: TODO - REMOVE BEFORE PUBLISIGH APP
-	// Function to generate a random task for a specific hour
-	func generateRandomTask(for hour: Int) -> ToDo {
-		let calendar = Calendar.current
-		var components = calendar.dateComponents([.year, .month, .day], from: Date())
-		components.hour = hour
-
-		guard let startDate = calendar.date(from: components) else {
-			fatalError("Could not create date for hour \(hour)")
-		}
-
-		// Create a random title and description
-		let randomTitle = "Random Task \(hour)"
-		let randomDescription = "This is a randomly generated task for hour \(hour)."
-
-		// End date is set to one hour after the start date
-		let endDate = startDate.addingTimeInterval(3600) // 1 hour later
-
-		return ToDo(id: UUID(), title: randomTitle, description: randomDescription, startDate: startDate, endDate: endDate, isCompleted: false)
-	}
 
 	/// Method to filter tasks by it's start date and populate accordingly to result
 	private func groupTasksByHour(todos: [ToDo]) -> [Int: [ToDo]] {
@@ -119,24 +101,74 @@ final class MainViewController: GenericViewController<MainView> {
 
 	private func setupNavigationBar() {
 
+		let optionsButton = UIBarButtonItem(
+
+			image: UIImage(systemName: "gear"),
+			style: .plain,
+			target: self,
+			action: #selector(showOptionsMenu)
+		)
+
+		optionsButton.tintColor = .white
+		navigationItem.leftBarButtonItem = optionsButton
+
 		let createButton = UIBarButtonItem(
+
 			title: "New Task +",
 			style: .plain,
 			target: self,
-			action: #selector(createButtonTapped))
+			action: #selector(createButtonTapped)
+		)
 
 		createButton.tintColor = .white
 		navigationItem.rightBarButtonItem = createButton
 	}
 
-	// MARK: Implement new task creation
+	@objc private func showOptionsMenu() {
+
+		let alertController = UIAlertController(title: nil,
+												message: nil,
+												preferredStyle: .actionSheet)
+
+		let shareAction = UIAlertAction(title: "Share tasks",
+										style: .default) { action in
+			self.shareTasks()
+		}
+		alertController.addAction(shareAction)
+
+		let deleteAction = UIAlertAction(title: "Delete all tasks",
+										 style: .destructive) { action in
+			self.dataManager.deleteAllTasks()
+			self.dailyVisibleTasks = []
+			self.applySnapshot()
+		}
+		alertController.addAction(deleteAction)
+
+		let cancelAction = UIAlertAction(title: "Cancel",
+										 style: .cancel)
+		alertController.addAction(cancelAction)
+
+		present(alertController, animated: true)
+	}
+
 
 	@objc private func createButtonTapped() {
 
-		let taskScreen = TaskViewController(screenMode: .newTask, dataManager: dataManager)
+		let taskScreen = TaskViewController(screenMode: .newTask,
+											dataManager: dataManager)
 		navigationController?.pushViewController(taskScreen,
 												 animated: true)
 	}
+
+	// MARK: Convert Tasks from Realm into JSON file and prepare to share
+
+	private func shareTasks() {
+		let tasksToShare = dataManager.getAllTasks()
+
+		// allTasks.convertToJSON()
+	}
+
+	// MARK: Setup Controller
 
 	private func setupDelegates() {
 
@@ -349,18 +381,16 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
 		didSelectItemAt indexPath: IndexPath
 	) {
 
-		// Deselect previous cell if any
 			if let previousIndexPath = selectedDateCellIndexPath {
 				if let previousCell = collectionView.cellForItem(at: previousIndexPath) as? CalendarCell {
 					previousCell.isSelectedCell = false
 				}
 			}
 
-			// Select new cell
 			guard let cell = collectionView.cellForItem(at: indexPath) as? CalendarCell else { return }
 			cell.isSelectedCell = true
 
-			// Update selected date and index path
+
 			let day = days[indexPath.row]
 			selectedDate = day.date
 			selectedDateCellIndexPath = indexPath
@@ -368,7 +398,9 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
 		// MARK: Fetch tasks from Realm and pass to DataSource via local array of tasks
 
 			print(selectedDate ?? "No date selected")
-		print(selectedDateCellIndexPath)
+			print(selectedDateCellIndexPath)
+		dailyVisibleTasks = dataManager.loadDailyTasks(date: selectedDate)
+		applySnapshot()
 	}
 
 	func collectionView(
@@ -427,6 +459,40 @@ extension MainViewController: UITableViewDelegate {
 		header.configure(with: String(format: "%02d:00", section))
 		return header
 	}
+
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+		guard let selectedTask = dataSource.itemIdentifier(for: indexPath) else { return }
+
+		let detailedScreen = TaskViewController(screenMode: .detail(id: selectedTask.id),
+												dataManager: dataManager)
+
+		navigationController?.pushViewController(detailedScreen, animated: true)
+	}
+
+	func tableView(_ tableView: UITableView,
+					   contextMenuConfigurationForRowAt indexPath: IndexPath,
+					   point: CGPoint) -> UIContextMenuConfiguration? {
+
+		guard let selectedTask = dataSource.itemIdentifier(for: indexPath) else { return UIContextMenuConfiguration() }
+
+			return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+
+				// Create delete action
+				let deleteAction = UIAction(title: "Delete", attributes: .destructive) { action in
+					guard let indexToDelete = self.dailyVisibleTasks.firstIndex(of:selectedTask) else {
+						return
+					}
+					self.dailyVisibleTasks.remove(at: indexToDelete)
+					self.dataManager.deleteTask(selectedTask)
+					self.applySnapshot()
+				}
+
+				// Create other actions if needed
+
+				return UIMenu(title: "", children: [deleteAction])
+			}
+		}
 }
 
 
