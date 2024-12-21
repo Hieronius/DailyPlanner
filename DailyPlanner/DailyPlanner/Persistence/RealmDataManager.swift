@@ -12,6 +12,12 @@ protocol RealmDataManagerProtocol: AnyObject {
 	/// Load only selected task
 	func loadSelectedTask(id: UUID) -> ToDo?
 
+	/// Fetch all existing tasks from the storage
+	func getAllTasks() -> [ToDo]
+
+	/// Method to save all given tasks to the Realm
+	func saveAllTasks(_ tasks: [ToDo])
+
 	/// Save or update a task
 	func saveOrUpdateTask(_ task: ToDo)
 
@@ -20,6 +26,7 @@ protocol RealmDataManagerProtocol: AnyObject {
 
 	/// Delete all stored tasks
 	func deleteAllTasks()
+
 }
 
 /// Implementation of the manager to work with Realm Data Storage
@@ -32,6 +39,7 @@ final class RealmDataManager: RealmDataManagerProtocol {
 	// MARK: - Initialization
 
 	init() throws {
+		
 		do {
 			self.realm = try Realm()
 		} catch {
@@ -43,6 +51,7 @@ final class RealmDataManager: RealmDataManagerProtocol {
 
 	/// Get all stored tasks for specific day
 	func loadDailyTasks(date: Date) -> [ToDo] {
+
 		let calendar = Calendar.current
 
 		// Get the start and end of the day
@@ -75,8 +84,37 @@ final class RealmDataManager: RealmDataManagerProtocol {
 		return task
 	}
 
+	/// Fetch all existing tasks from the storage
+	func getAllTasks() -> [ToDo] {
+
+		let realmTasks = realm.objects(ToDoRealm.self)
+
+		let tasks: [ToDo] = realmTasks.map { realmTask in
+			return ToDo(object: realmTask)
+		}
+
+		return tasks
+	}
+
+	/// Method to save all given tasks to the Realm
+	func saveAllTasks(_ tasks: [ToDo]) {
+
+		let realmTasks = tasks.map { task in
+			ToDoRealm(task)
+		}
+
+		do {
+			try realm.write {
+				realm.add(realmTasks)
+			}
+		} catch {
+			print("Failed to save an array of tasks: \(error.localizedDescription)")
+		}
+	}
+
 	/// Save or update a task
 	func saveOrUpdateTask(_ task: ToDo) {
+
 		let realmTask = ToDoRealm(task) // Convert ToDo to ToDoRealm
 
 		do {
