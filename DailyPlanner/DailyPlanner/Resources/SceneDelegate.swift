@@ -11,8 +11,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		window = UIWindow(windowScene: windowScene)
 
 		do {
-			let realmDataManager = try RealmDataManager()
-			let rootVC = MainViewController(dataManager: realmDataManager)
+			let dataManager = try RealmDataManager()
+			let jsonHandler = JSONHandler()
+			let rootVC = MainViewController(dataManager: dataManager,
+											jsonHandler: jsonHandler)
 			let NavVC = UINavigationController(rootViewController: rootVC)
 
 			guard let window else { return }
