@@ -136,6 +136,12 @@ final class MainViewController: GenericViewController<MainView> {
 		}
 		alertController.addAction(shareAction)
 
+		let importAction = UIAlertAction(title: "Import tasks",
+										 style: .default) { action in
+			self.importTasks()
+		}
+		alertController.addAction(importAction)
+
 		let deleteAction = UIAlertAction(title: "Delete all tasks",
 										 style: .destructive) { action in
 			self.dataManager.deleteAllTasks()
@@ -163,9 +169,26 @@ final class MainViewController: GenericViewController<MainView> {
 	// MARK: Convert Tasks from Realm into JSON file and prepare to share
 
 	private func shareTasks() {
+
 		let tasksToShare = dataManager.getAllTasks()
 
-		// allTasks.convertToJSON()
+		do {
+			try jsonHandler.saveTodosToFile(tasksToShare, filename: "Tasks.json")
+		} catch {
+			print("Failed to encode tasks for sharing \(error.localizedDescription)")
+		}
+	}
+
+	private func importTasks() {
+
+		do {
+			let tasksToImport = try jsonHandler.loadTodosFromFile(filename: "Tasks.json")
+			dataManager.saveAllTasks(tasksToImport)
+			dailyVisibleTasks = dataManager.loadDailyTasks(date: selectedDate)
+			applySnapshot()
+		} catch {
+			print("Failed to decode tasks from import \(error.localizedDescription)")
+		}
 	}
 
 	// MARK: Setup Controller
@@ -189,20 +212,14 @@ final class MainViewController: GenericViewController<MainView> {
 	}
 
 	private func updateDaysAndReloadCollectionView() {
-		// Regenerate days array
+
 		days = generateDaysInMonth(for: baseDate)
 
-		// Set selected date to today if it's nil
-		if selectedDate == nil {
-			selectedDate = Date()
 			selectedDateCellIndexPath = IndexPath(row: days.firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: Date()) }) ?? 0, section: 0)
 			days[selectedDateCellIndexPath?.row ?? 0].isSelected = true
-		}
 
-		// Reload collection view data
 		rootView.calendarCollectionView.reloadData()
 
-		// Update header with current month
 		rootView.calendarHeaderView.baseDate = baseDate
 	}
 
