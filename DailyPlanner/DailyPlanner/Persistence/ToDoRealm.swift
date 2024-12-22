@@ -16,6 +16,7 @@ final class ToDoRealm: Object {
 	// MARK: - Initialization
 
 	convenience init(
+
 		id: UUID,
 		title: String,
 		discription: String,
@@ -39,6 +40,7 @@ final class ToDoRealm: Object {
 extension ToDoRealm {
 
 	convenience init(_ toDo: ToDo) {
+
 		self.init()
 		self.id = toDo.id
 		self.title = toDo.title
