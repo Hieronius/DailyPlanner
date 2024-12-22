@@ -32,6 +32,21 @@ protocol JSONHandlerProtocol {
 	/// - Throws: An error if encoding fails.
 	/// - Returns: A `Data` object containing the encoded JSON.
 	func encodeTodos(_ todos: [ToDo]) throws -> Data
+
+	/// Saves an array of `ToDo` objects to a local JSON file.
+	///
+	/// - Parameters:
+	///   - todos: An array of `ToDo` objects to save to the file.
+	///   - filename: The name of the file where the JSON data will be saved, including the `.json` extension.
+	/// - Throws: An error if encoding fails or if writing to the file fails.
+	func saveTodosToFile(_ todos: [ToDo], filename: String) throws
+
+	/// Loads an array of `ToDo` objects from a local JSON file.
+	///
+	/// - Parameter filename: The name of the file from which to load the JSON data, including the `.json` extension.
+	/// - Throws: An error if reading from the file fails or if decoding fails.
+	/// - Returns: An array of `ToDo` objects loaded from the JSON file.
+	func loadTodosFromFile(filename: String) throws -> [ToDo]
 }
 
 /// Implementation of the JSONHandler service
@@ -88,9 +103,50 @@ final class JSONHandler: JSONHandlerProtocol {
 	/// - Parameter todos: An array of `ToDo` objects to encode.
 	/// - Throws: An error if encoding fails.
 	/// - Returns: A `Data` object containing the encoded JSON.
+	@discardableResult
 	func encodeTodos(_ todos: [ToDo]) throws -> Data {
 
 		let todoJSONs = todos.map { ToDoJSON(from: $0) }
 		return try encoder.encode(todoJSONs)
+	}
+
+	/// Saves an array of `ToDo` objects to a local JSON file.
+	///
+	/// This method encodes the provided array of `ToDo` objects into JSON format
+	/// and writes it to a specified file in the app's Documents directory.
+	/// It can throw an error if encoding fails or if writing to the file fails.
+	///
+	/// - Parameters:
+	///   - todos: An array of `ToDo` objects to save to the file.
+	///   - filename: The name of the file where the JSON data will be saved, including the `.json` extension.
+	/// - Throws: An error if encoding fails or if writing to the file fails.
+	func saveTodosToFile(_ todos: [ToDo], filename: String) throws {
+
+		let data = try encodeTodos(todos)
+		let fileURL = getDocumentsDirectory().appendingPathComponent(filename)
+		try data.write(to: fileURL)
+	}
+
+	/// Loads an array of `ToDo` objects from a local JSON file.
+	///
+	/// This method reads data from a specified JSON file in the app's Documents directory,
+	/// decodes it into an array of `ToDoJSON` objects, and then maps these into `ToDo` objects.
+	/// It can throw an error if reading from the file fails or if decoding fails.
+	///
+	/// - Parameter filename: The name of the file from which to load the JSON data, including the `.json` extension.
+	/// - Throws: An error if reading from the file fails or if decoding fails.
+	/// - Returns: An array of `ToDo` objects loaded from the JSON file.
+	func loadTodosFromFile(filename: String) throws -> [ToDo] {
+
+		let fileURL = getDocumentsDirectory().appendingPathComponent(filename)
+		let data = try Data(contentsOf: fileURL)
+		let todoJSONs = try decodeToDoJSON(from: data)
+		return todoJSONs.map { ToDo(json: $0) }
+	}
+
+	/// Helper function to get Documents Directory
+	private func getDocumentsDirectory() -> URL {
+
+		return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
 	}
 }
