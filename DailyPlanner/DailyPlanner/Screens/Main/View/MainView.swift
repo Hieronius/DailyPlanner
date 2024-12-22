@@ -36,7 +36,7 @@ final class MainView: UIView {
 
 		calendarCollectionView = CalendarBodyCollectionView()
 
-		self.addSubview(calendarCollectionView)
+		addSubview(calendarCollectionView)
 
 		calendarCollectionView.translatesAutoresizingMaskIntoConstraints = false
 

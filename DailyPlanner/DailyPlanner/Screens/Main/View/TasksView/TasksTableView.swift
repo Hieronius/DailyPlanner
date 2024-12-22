@@ -15,6 +15,7 @@ final class TasksTableView: UITableView {
 
 	private func configureTableView() {
 		backgroundColor = .systemGray6
+
 		layer.cornerRadius = 15
 		clipsToBounds = true
 
