@@ -1,21 +1,44 @@
 import UIKit
 
-class ToDoCell: UITableViewCell {
+/// Custom cell to store our tasks
+final class ToDoCell: UITableViewCell {
+
+	// MARK: - Public Properties
 
 	static let reuseIdentifier = "ToDoCell"
+
+	// MARK: - Static Properties
 
 	private let titleLabel = UILabel()
 	private let descriptionLabel = UILabel()
 	private let checkboxImageView = UIImageView()
 
-	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-		super.init(style: style, reuseIdentifier: reuseIdentifier)
+	// MARK: - Initialization
+
+	override init(style: UITableViewCell.CellStyle,
+				  reuseIdentifier: String?) {
+		super.init(style: style,
+				   reuseIdentifier: reuseIdentifier)
 		setupView()
 	}
 
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
+
+	// MARK: - Public Methods
+
+	override func setSelected(_ selected: Bool, animated: Bool) {
+		super.setSelected(false, animated: false)
+	}
+
+	func configure(with task: ToDo) {
+		titleLabel.text = task.title
+		descriptionLabel.text = task.description
+		checkboxImageView.image = task.isCompleted ? UIImage(systemName: "checkmark.square") : UIImage(systemName: "square")
+	}
+
+	// MARK: - Private Methods
 
 	private func setupView() {
 		backgroundColor = .systemGray6
@@ -53,11 +76,5 @@ class ToDoCell: UITableViewCell {
 			descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
 			descriptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
 		])
-	}
-
-	func configure(with task: ToDo) {
-		titleLabel.text = task.title
-		descriptionLabel.text = task.description
-		checkboxImageView.image = task.isCompleted ? UIImage(systemName: "checkmark.square") : UIImage(systemName: "square")
 	}
 }
