@@ -2,6 +2,7 @@ import UIKit
 
 protocol TaskViewDelegate: AnyObject {
 	func doneButtonTapped()
+	func startDatePickerValueBeenChanged()
 }
 
 final class TaskView: UIView {
@@ -51,6 +52,8 @@ final class TaskView: UIView {
 		setupLayout()
 		setupAppearance()
 		setupData()
+		setupDoneButton()
+		setupStartDatePicker()
 	}
 
 	required init(coder: NSCoder) {
@@ -110,7 +113,7 @@ final class TaskView: UIView {
 			containerView.trailingAnchor.constraint(equalTo:
 														safeAreaLayoutGuide.trailingAnchor),
 			containerView.heightAnchor.constraint(equalTo:
-													heightAnchor, multiplier: 0.6),
+													heightAnchor, multiplier: 0.7),
 
 			stackView.topAnchor.constraint(equalTo:
 											containerView.topAnchor, constant: 10),
@@ -240,11 +243,23 @@ final class TaskView: UIView {
 	}
 
 	func setupDoneButton() {
-		doneButton.addTarget(self, action: #selector(didDoneButtonTapped), for: .touchUpInside)
+		doneButton.addTarget(self,
+							 action: #selector(didDoneButtonTapped),
+							 for: .touchUpInside)
 	}
 
 	@objc private func didDoneButtonTapped() {
 		delegate?.doneButtonTapped()
+	}
+
+	func setupStartDatePicker() {
+		startDatePicker.addTarget(self,
+								  action: #selector(startDatePickerValueBeenChanged),
+								  for: .valueChanged)
+	}
+
+	@objc private func startDatePickerValueBeenChanged() {
+		delegate?.startDatePickerValueBeenChanged()
 	}
 
 }
