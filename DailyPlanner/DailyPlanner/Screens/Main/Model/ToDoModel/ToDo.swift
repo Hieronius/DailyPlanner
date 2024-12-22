@@ -23,3 +23,17 @@ extension ToDo {
 		isCompleted = object.isCompleted
 	}
 }
+
+// MARK: - Convertion from `ToDoJSON`
+
+extension ToDo {
+
+	init(json: ToDoJSON) {
+		id = json.id
+		title = json.title
+		description = json.description
+		startDate = json.startDate
+		endDate = json.endDate
+		isCompleted = json.isCompleted
+	}
+}
