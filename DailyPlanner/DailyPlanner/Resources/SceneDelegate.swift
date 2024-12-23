@@ -13,8 +13,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		do {
 			let dataManager = try RealmDataManager()
 			let jsonHandler = JSONHandler()
-			let rootVC = MainViewController(dataManager: dataManager,
-											jsonHandler: jsonHandler)
+			let calendarGenerator = CalendarGenerator()
+
+			let rootVC = MainViewController(
+				dataManager: dataManager,
+				jsonHandler: jsonHandler,
+				calendarGenerator: calendarGenerator
+			)
 			let NavVC = UINavigationController(rootViewController: rootVC)
 
 			guard let window else { return }
