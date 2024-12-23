@@ -1,6 +1,6 @@
 import Foundation
 
-class DateService {
+final class DateService {
 
 	// MARK: - Public Properties
 
@@ -11,7 +11,4 @@ class DateService {
 	// MARK: - Initialization
 
 	private init() {}
-
-
-	// Additional methods related to date operations can go here
 }
