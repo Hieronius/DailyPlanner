@@ -27,6 +27,7 @@
 		DDABBB592CF976CA00AC4CC7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDABBB582CF976CA00AC4CC7 /* Assets.xcassets */; };
 		DDABBB5C2CF976CA00AC4CC7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDABBB5A2CF976CA00AC4CC7 /* LaunchScreen.storyboard */; };
 		DDAD7A332D152CB900371A4F /* ToDoJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAD7A322D152CB900371A4F /* ToDoJSON.swift */; };
+		DDB4F2B72D18FB400091C84E /* CalendarGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB4F2B62D18FB400091C84E /* CalendarGenerator.swift */; };
 		DDD5A2932D0931A400F0DB5F /* CalendarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD5A2922D0931A400F0DB5F /* CalendarHeaderView.swift */; };
 		DDD5A2952D0931E200F0DB5F /* CalendarBodyCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD5A2942D0931E200F0DB5F /* CalendarBodyCollectionView.swift */; };
 		DDD5A2972D09320300F0DB5F /* CalendarFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD5A2962D09320300F0DB5F /* CalendarFooterView.swift */; };
@@ -58,6 +59,7 @@
 		DDABBB5B2CF976CA00AC4CC7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DDABBB5D2CF976CA00AC4CC7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DDAD7A322D152CB900371A4F /* ToDoJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoJSON.swift; sourceTree = "<group>"; };
+		DDB4F2B62D18FB400091C84E /* CalendarGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarGenerator.swift; sourceTree = "<group>"; };
 		DDD5A2902D09116300F0DB5F /* DailyPlanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DailyPlanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDD5A2922D0931A400F0DB5F /* CalendarHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHeaderView.swift; sourceTree = "<group>"; };
 		DDD5A2942D0931E200F0DB5F /* CalendarBodyCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarBodyCollectionView.swift; sourceTree = "<group>"; };
@@ -227,6 +229,7 @@
 				DDD5A29E2D09336800F0DB5F /* MonthMetaData.swift */,
 				DDD5A29A2D09332600F0DB5F /* DateService.swift */,
 				DDD5A29C2D09334B00F0DB5F /* Day.swift */,
+				DDB4F2B62D18FB400091C84E /* CalendarGenerator.swift */,
 			);
 			path = CalendarModel;
 			sourceTree = "<group>";
@@ -340,6 +343,7 @@
 				DD85F15E2D0691F00061664F /* TaskViewController.swift in Sources */,
 				DDD5A2992D09328A00F0DB5F /* CalendarCell.swift in Sources */,
 				DDABBB542CF976C700AC4CC7 /* MainViewController.swift in Sources */,
+				DDB4F2B72D18FB400091C84E /* CalendarGenerator.swift in Sources */,
 				DDD5A2A22D09500500F0DB5F /* TasksTableView.swift in Sources */,
 				DD85F1582D06918E0061664F /* MainView.swift in Sources */,
 				DD85F1562D0691580061664F /* ToDo.swift in Sources */,
