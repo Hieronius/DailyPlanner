@@ -1,8 +1,6 @@
 import Foundation
 import RealmSwift
 
-// MARK: use writeAsync to avoid loading MainThread with operations
-
 /// Protocol for implementation of the manager to work with Realm Data Storage
 protocol RealmDataManagerProtocol: AnyObject {
 
