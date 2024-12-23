@@ -2,11 +2,23 @@ import Foundation
 
 /// Model to hold a `ToDo` properties 
 struct ToDo: Hashable {
+
+	/// Unique `ToDo`s Identifier
 	var id: UUID
+
+	/// `ToDo` title
 	var title: String = ""
+
+	/// `ToDo` description
 	var description: String = ""
+
+	/// Designated time to start `ToDo`
 	var startDate: Date?
+
+	/// Designated time to end `ToDo`
 	var endDate: Date?
+
+	/// Property to monitor is `ToDo` been completed or not
 	var isCompleted: Bool = false
 }
 
