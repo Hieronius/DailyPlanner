@@ -186,7 +186,7 @@ private extension CalendarGenerator {
 
 private extension CalendarGenerator {
 
-	// An enumeration representing errors that can occur during calendar data generation.
+	/// An enumeration representing errors that can occur during calendar data generation.
 	enum CalendarDataError: Error {
 		case metadataGeneration
 	}
