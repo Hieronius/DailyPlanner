@@ -146,11 +146,11 @@ private extension CalendarFooterView {
 
 	// MARK: - Actions
 
-	@objc private func didTapPreviousMonthButton() {
+	@objc func didTapPreviousMonthButton() {
 		delegate?.previousMonthButtonTapped()
 	}
 
-	@objc private func didTapNextMonthButton() {
+	@objc func didTapNextMonthButton() {
 		delegate?.nextMonthButtonTapped()
 	}
 }
