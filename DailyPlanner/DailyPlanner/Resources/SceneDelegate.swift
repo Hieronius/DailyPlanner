@@ -10,6 +10,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 		window = UIWindow(windowScene: windowScene)
 
+		// MARK: RootViewController Initialization
+
 		do {
 			let dataManager = try RealmDataManager()
 			let jsonHandler = JSONHandler()
@@ -27,7 +29,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			window.rootViewController = NavVC
 
 			window.makeKeyAndVisible()
+
 		} catch {
+			
 			print("Failed to initialize RealmDataManager", error.localizedDescription)
 		}
 	}

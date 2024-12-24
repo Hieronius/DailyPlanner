@@ -1,14 +1,21 @@
 import UIKit
 
+/// A protocol that defines methods for responding to events in the `TaskView`.
 protocol TaskViewDelegate: AnyObject {
+
+	/// Called when the done button is tapped.
 	func doneButtonTapped()
+
+	/// Called when the value of the start date picker has changed.
 	func startDatePickerValueBeenChanged()
 }
 
+/// A custom view for managing task details.
 final class TaskView: UIView {
 
 	// MARK: - Public Properties
 
+	/// The delegate that receives events from the task view.
 	weak var delegate: TaskViewDelegate?
 	
 	let containerView = UIView()
@@ -41,10 +48,11 @@ final class TaskView: UIView {
 
 	let bottomSpacer = UIView()
 
-	let doneButton = UIButton() // set delegate to controller (collect task view -> update Realm)
+	let doneButton = UIButton()
 
 	// MARK: - Initialization
 
+	/// This initializer sets up the views, layout, appearance, and initial data for the task view.
 	init() {
 		super.init(frame: .zero)
 
@@ -59,10 +67,15 @@ final class TaskView: UIView {
 	required init(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
+}
 
-	// MARK: - Private Methods
+// MARK: - Private Methods
 
-	private func embedViews() {
+// MARK: - Embed Views
+
+private extension TaskView {
+
+	func embedViews() {
 
 		addSubview(containerView)
 
@@ -97,8 +110,13 @@ final class TaskView: UIView {
 
 		addSubview(doneButton)
 	}
+}
 
-	private func setupLayout() {
+// MARK: - Setup Layout
+
+private extension TaskView {
+
+	func setupLayout() {
 
 		containerView.translatesAutoresizingMaskIntoConstraints = false
 		stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -129,13 +147,13 @@ final class TaskView: UIView {
 			titleSpacer.heightAnchor.constraint(equalToConstant: 10),
 
 			titleTextField.widthAnchor.constraint(equalTo:
-												stackView.widthAnchor),
+													stackView.widthAnchor),
 			titleTextField.heightAnchor.constraint(equalToConstant: 35),
 
 			descriptionSpacer.heightAnchor.constraint(equalToConstant: 10),
 
 			descriptionTextField.widthAnchor.constraint(equalTo:
-												stackView.widthAnchor),
+															stackView.widthAnchor),
 			descriptionTextField.heightAnchor.constraint(equalToConstant: 35),
 
 			startDatePicker.heightAnchor.constraint(lessThanOrEqualToConstant: 40),
@@ -155,12 +173,15 @@ final class TaskView: UIView {
 			doneButton.trailingAnchor.constraint(equalTo:
 													safeAreaLayoutGuide.trailingAnchor),
 			doneButton.heightAnchor.constraint(equalToConstant: 50)
-
 		])
-
 	}
+}
 
-	private func setupAppearance() {
+// MARK: - Setup Appearance
+
+private extension TaskView {
+
+	func setupAppearance() {
 
 		backgroundColor = .systemBackground
 
@@ -210,10 +231,14 @@ final class TaskView: UIView {
 		doneButton.backgroundColor = .systemRed
 		doneButton.layer.cornerRadius = 10
 		doneButton.clipsToBounds = true
-
 	}
+}
 
-	private func setupData() {
+// MARK: - Setup Data
+
+private extension TaskView {
+
+	func setupData() {
 
 		titleLabel.text = "Task title"
 
@@ -233,33 +258,38 @@ final class TaskView: UIView {
 
 	func setupCustomPlaceholder(_ textField: UITextField) {
 
-		// Set attributed placeholder
 		let placeholderText = "Enter your text here"
 		let attributes: [NSAttributedString.Key: Any] = [
-			.foregroundColor: UIColor.lightGray, // Placeholder color
-			.font: UIFont.systemFont(ofSize: 16) // Placeholder font size
+			.foregroundColor: UIColor.lightGray,
+			.font: UIFont.systemFont(ofSize: 16)
 		]
 		textField.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
 	}
+}
+
+// MARK: - Actions
+
+private extension TaskView {
 
 	func setupDoneButton() {
+
 		doneButton.addTarget(self,
 							 action: #selector(didDoneButtonTapped),
 							 for: .touchUpInside)
 	}
 
-	@objc private func didDoneButtonTapped() {
+	@objc func didDoneButtonTapped() {
 		delegate?.doneButtonTapped()
 	}
 
 	func setupStartDatePicker() {
+
 		startDatePicker.addTarget(self,
 								  action: #selector(startDatePickerValueBeenChanged),
 								  for: .valueChanged)
 	}
 
-	@objc private func startDatePickerValueBeenChanged() {
+	@objc func startDatePickerValueBeenChanged() {
 		delegate?.startDatePickerValueBeenChanged()
 	}
-
 }

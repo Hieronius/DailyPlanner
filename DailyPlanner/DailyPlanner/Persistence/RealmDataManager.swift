@@ -4,27 +4,40 @@ import RealmSwift
 /// Protocol for implementation of the manager to work with Realm Data Storage
 protocol RealmDataManagerProtocol: AnyObject {
 
-	/// Get all stored tasks for specific day
+	/// Retrieves all stored tasks for a specific day.
+	///
+	/// - Parameter date: The date for which to load tasks.
+	/// - Returns: An array of `ToDo` objects representing the tasks for the specified day.
 	func loadDailyTasks(date: Date) -> [ToDo]
 
-	/// Load only selected task
+	/// Loads a selected task by its unique identifier.
+	///
+	/// - Parameter id: The unique identifier of the task to load.
+	/// - Returns: The corresponding `ToDo` object, or `nil` if not found.
 	func loadSelectedTask(id: UUID) -> ToDo?
 
-	/// Fetch all existing tasks from the storage
+	/// Fetches all existing tasks from the storage.
+	///
+	/// - Returns: An array of all `ToDo` objects stored in Realm.
 	func getAllTasks() -> [ToDo]
 
-	/// Method to save all given tasks to the Realm
+	/// Saves an array of tasks to the Realm database.
+	///
+	/// - Parameter tasks: An array of `ToDo` objects to save.
 	func saveAllTasks(_ tasks: [ToDo])
 
-	/// Save or update a task
+	/// Saves or updates a single task in the Realm database.
+	///
+	/// - Parameter task: The `ToDo` object to save or update.
 	func saveOrUpdateTask(_ task: ToDo)
 
-	/// Remove selected task
+	/// Removes a selected task from the Realm database.
+	///
+	/// - Parameter task: The `ToDo` object to delete.
 	func deleteTask(_ task: ToDo)
 
-	/// Delete all stored tasks
+	/// Deletes all stored tasks from the Realm database.
 	func deleteAllTasks()
-
 }
 
 /// Implementation of the manager to work with Realm Data Storage
@@ -36,6 +49,12 @@ final class RealmDataManager: RealmDataManagerProtocol {
 
 	// MARK: - Initialization
 
+	/// Initializes a new instance of `RealmDataManager`.
+	///
+	/// This initializer attempts to create a new instance of the Realm database.
+	/// It throws an error if initialization fails.
+	///
+	/// - Throws: An error if the Realm instance cannot be created.
 	init() throws {
 		
 		do {
@@ -44,10 +63,19 @@ final class RealmDataManager: RealmDataManagerProtocol {
 			throw error
 		}
 	}
+}
 
-	// MARK: - Public Methods
+// MARK: - Public Methods
 
-	/// Get all stored tasks for specific day
+extension RealmDataManager {
+
+	/// Retrieves all stored tasks for a specific day.
+	///
+	/// This method calculates the start and end of the specified day and fetches
+	/// tasks that fall within that range from the Realm database.
+	///
+	/// - Parameter date: The date for which to load tasks.
+	/// - Returns: An array of `ToDo` objects representing the tasks for the specified day.
 	func loadDailyTasks(date: Date) -> [ToDo] {
 
 		let calendar = Calendar.current
@@ -71,18 +99,28 @@ final class RealmDataManager: RealmDataManagerProtocol {
 		return tasks
 	}
 
-	/// Load only selected task
+	/// Loads a selected task by its unique identifier.
+	///
+	/// This method retrieves a single task from the Realm database based on its ID.
+	///
+	/// - Parameter id: The unique identifier of the task to load.
+	/// - Returns: The corresponding `ToDo` object, or `nil` if not found.
 	func loadSelectedTask(id: UUID) -> ToDo? {
 
 		guard let realmTask = realm.object(ofType: ToDoRealm.self,
-												forPrimaryKey: id)
+										   forPrimaryKey: id)
 		else { return nil }
 
 		let task = ToDo.init(object: realmTask)
 		return task
 	}
 
-	/// Fetch all existing tasks from the storage
+	/// Fetches all existing tasks from the storage.
+	///
+	/// This method retrieves all tasks stored in the Realm database and converts them
+	/// into an array of `ToDo` objects.
+	///
+	/// - Returns: An array of all `ToDo` objects stored in Realm.
 	func getAllTasks() -> [ToDo] {
 
 		let realmTasks = realm.objects(ToDoRealm.self)
@@ -94,7 +132,12 @@ final class RealmDataManager: RealmDataManagerProtocol {
 		return tasks
 	}
 
-	/// Method to save all given tasks to the Realm
+	/// Saves an array of tasks to the Realm database.
+	///
+	/// This method converts each `ToDo` object into a corresponding `ToDoRealm`
+	/// object and saves them in a single transaction.
+	///
+	/// - Parameter tasks: An array of `ToDo` objects to save.
 	func saveAllTasks(_ tasks: [ToDo]) {
 
 		let realmTasks = tasks.map { task in
@@ -110,7 +153,12 @@ final class RealmDataManager: RealmDataManagerProtocol {
 		}
 	}
 
-	/// Save or update a task
+	/// Saves or updates a single task in the Realm database.
+	///
+	/// This method converts a `ToDo` object into a corresponding `ToDoRealm`
+	/// object and saves or updates it in a single transaction based on its primary key.
+	///
+	/// - Parameter task: The `ToDo` object to save or update.
 	func saveOrUpdateTask(_ task: ToDo) {
 
 		let realmTask = ToDoRealm(task) // Convert ToDo to ToDoRealm
@@ -124,7 +172,12 @@ final class RealmDataManager: RealmDataManagerProtocol {
 		}
 	}
 
-	/// Remove selected task from Realm
+	/// Removes a selected task from the Realm database.
+	///
+	/// This method deletes a specific task identified by its ID from the storage,
+	/// if it exists in the database.
+	///
+	/// - Parameter task: The `ToDo` object to delete.
 	func deleteTask(_ task: ToDo) {
 
 		guard let realmTask = realm.object(ofType: ToDoRealm.self, forPrimaryKey: task.id)
@@ -139,7 +192,10 @@ final class RealmDataManager: RealmDataManagerProtocol {
 		}
 	}
 
-	/// Delete all stored tasks
+	/// Deletes all stored tasks from the Realm database.
+	///
+	/// This method removes all entries from the storage in a single transaction,
+	/// effectively clearing out all existing tasks.
 	func deleteAllTasks() {
 
 		do {

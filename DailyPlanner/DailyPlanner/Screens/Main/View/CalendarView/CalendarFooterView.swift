@@ -1,21 +1,35 @@
 import UIKit
 
+/// A protocol that defines methods for responding to calendar footer events.
 protocol CalendarFooterViewDelegate: AnyObject {
+
+	/// Called when the previous month button is tapped.
 	func previousMonthButtonTapped()
+
+	/// Called when the next month button is tapped.
 	func nextMonthButtonTapped()
 }
 
+/// A custom view that serves as the footer for a calendar.
 final class CalendarFooterView: UIView {
 
 	// MARK: - Public Properties
 
+	/// A delegate that receives events from the footer view.
 	weak var delegate: CalendarFooterViewDelegate?
+
+	/// A separator view that visually divides the footer from other content.
 	var separatorView: UIView!
+
+	/// A button that allows the user to navigate to the previous month.
 	var previousMonthButton: UIButton!
+
+	/// A button that allows the user to navigate to the next month.
 	var nextMonthButton: UIButton!
 
 	// MARK: - Initialization
 
+	/// This initializer sets up the footer view and its components.
 	init() {
 		super.init(frame: .zero)
 
@@ -25,29 +39,36 @@ final class CalendarFooterView: UIView {
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
+}
 
-	// MARK: - Private Methods
+// MARK: - Private Methods
 
+private extension CalendarFooterView {
 
-	private func setupViews() {
+	// MARK: - UI
+
+	func setupViews() {
+
 		setupFooterView()
 		setupSeparatorView()
 		setupPreviousMonthButton()
 		setupNextMonthButton()
 	}
 
-	private func setupFooterView() {
+	func setupFooterView() {
+
 		backgroundColor = .systemGray6
 
 		layer.maskedCorners = [
-		  .layerMinXMaxYCorner,
-		  .layerMaxXMaxYCorner
+			.layerMinXMaxYCorner,
+			.layerMaxXMaxYCorner
 		]
 		layer.cornerCurve = .continuous
 		layer.cornerRadius = 15
 	}
 
-	private func setupSeparatorView() {
+	func setupSeparatorView() {
+
 		separatorView = UIView()
 		separatorView.backgroundColor = UIColor.label.withAlphaComponent(0.2)
 
@@ -64,7 +85,8 @@ final class CalendarFooterView: UIView {
 
 	}
 
-	private func setupPreviousMonthButton() {
+	func setupPreviousMonthButton() {
+
 		previousMonthButton = UIButton()
 		previousMonthButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .medium)
 		previousMonthButton.titleLabel?.textAlignment = .left
@@ -83,21 +105,18 @@ final class CalendarFooterView: UIView {
 
 		addSubview(previousMonthButton)
 
-		// Ensure previousMonthButton uses Auto Layout
 		previousMonthButton.translatesAutoresizingMaskIntoConstraints = false
 
-		// Add constraints for previousMonthButton
 		NSLayoutConstraint.activate([
 			previousMonthButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
 			previousMonthButton.centerYAnchor.constraint(equalTo: centerYAnchor)
 		])
 
-
-		// Action
 		previousMonthButton.addTarget(self, action: #selector(didTapPreviousMonthButton), for: .touchUpInside)
 	}
 
-	private func setupNextMonthButton() {
+	func setupNextMonthButton() {
+
 		nextMonthButton = UIButton()
 		nextMonthButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .medium)
 		nextMonthButton.titleLabel?.textAlignment = .right
@@ -117,12 +136,10 @@ final class CalendarFooterView: UIView {
 
 		nextMonthButton.translatesAutoresizingMaskIntoConstraints = false
 
-		// Add constraints for nextMonthButton
 		NSLayoutConstraint.activate([
 			nextMonthButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
 			nextMonthButton.centerYAnchor.constraint(equalTo: centerYAnchor)
 		])
-
 
 		nextMonthButton.addTarget(self, action: #selector(didTapNextMonthButton), for: .touchUpInside)
 	}

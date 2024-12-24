@@ -25,7 +25,9 @@ struct ToDo: Hashable {
 // MARK: - Convertion from `ToDoRealm`
 
 extension ToDo {
-	
+
+	/// Initializes a `ToDo` instance from a `ToDoRealm` object.
+	/// - Parameter object: The `ToDoRealm` object that contains the data to initialize the `ToDo`.
 	init(object: ToDoRealm) {
 		id = object.id
 		title = object.title
@@ -40,6 +42,8 @@ extension ToDo {
 
 extension ToDo {
 
+	/// Initializes a `ToDo` instance from a JSON representation.
+	/// - Parameter json: The `ToDoJSON` object that contains the data to initialize the `ToDo`.
 	init(json: ToDoJSON) {
 		id = json.id
 		title = json.title

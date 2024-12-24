@@ -1,10 +1,17 @@
 import Foundation
 
+/// A structure representing a single day in a calendar.
 struct Day {
-  let date: Date
-  let number: String
-  var isSelected: Bool
 
-  /// tracks is the current date on the visiable month or not
-  let isWithinDisplayedMonth: Bool
+	/// The date corresponding to this day.
+	let date: Date
+
+	/// The numerical representation of the day (e.g., "1", "15").
+	let number: String
+
+	/// A Boolean value indicating whether this day is currently selected.
+	var isSelected: Bool
+
+	/// A Boolean value indicating whether this day falls within the currently displayed month.
+	let isWithinDisplayedMonth: Bool
 }

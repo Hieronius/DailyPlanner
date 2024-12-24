@@ -1,11 +1,17 @@
 import UIKit
 
+/// A custom view that displays the header for a calendar, including the current month
 final class CalendarHeaderView: UIView {
 
 	// MARK: - Public Properties
 
+	/// A label that displays the current month of the year.
 	var monthLabel: UILabel!
+
+	/// A stack view that holds and distributes labels for the days of the week (e.g., M-T-W...).
 	var dayOfWeekStackView: UIStackView!
+
+	/// A separator view that visually divides the header from the calendar days below.
 	var separatorView: UIView!
 
 	/// Base date used for displaying month information.
@@ -15,12 +21,17 @@ final class CalendarHeaderView: UIView {
 		}
 	}
 
-	/// Date formatter for formatting date information.
+	// MARK: - Private Properties
+
+	/// A date formatter used for formatting date information into a readable string.
 	private var dateFormatter: DateFormatter!
 
 
 	// MARK: - Initialization
 
+	/// Initializes a new instance of `CalendarHeaderView`.
+	///
+	/// This initializer sets up the view's components and configures their layout.
 	init() {
 		super.init(frame: CGRect.zero)
 
@@ -31,35 +42,37 @@ final class CalendarHeaderView: UIView {
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
+}
 
-	// MARK: - Private Methods
+// MARK: - Private Methods
 
-	private func setupViews() {
+private extension CalendarHeaderView {
+
+	func setupViews() {
+
 		setupHeaderView()
 		setupHeaderConstraints()
 	}
 
-	private func setupHeaderView() {
+	func setupHeaderView() {
+
 		backgroundColor = .systemGray6
 
-		// Set the masked corners of the layer to the top-left and top-right corners to create rounded corners.
 		layer.maskedCorners = [
 			.layerMinXMinYCorner,
 			.layerMaxXMinYCorner
 		]
 
-		// Set the corner curve to continuous to make the corners smooth.
 		layer.cornerCurve = .continuous
-
 		layer.cornerRadius = 15
 
 		setupMonthLabel()
 		setupDayOfWeekStackView()
 		setupSeparatorView()
-
 	}
 
-	private func setupMonthLabel() {
+	func setupMonthLabel() {
+
 		monthLabel = UILabel()
 		monthLabel.font = .systemFont(ofSize: 26, weight: .bold)
 		monthLabel.text = "Month"
@@ -67,7 +80,8 @@ final class CalendarHeaderView: UIView {
 		addSubview(monthLabel)
 	}
 
-	private func setupDayOfWeekStackView() {
+	func setupDayOfWeekStackView() {
+
 		dayOfWeekStackView = UIStackView()
 		dayOfWeekStackView.distribution = .fillEqually
 		addSubview(dayOfWeekStackView)
@@ -83,41 +97,32 @@ final class CalendarHeaderView: UIView {
 		}
 	}
 
-	private func setupSeparatorView() {
+	func setupSeparatorView() {
+
 		separatorView = UIView()
 		separatorView.backgroundColor = UIColor.label.withAlphaComponent(0.2)
 
 		addSubview(separatorView)
 	}
 
-	private func setupDateFormatter() {
-		dateFormatter = DateFormatter()
-		dateFormatter.calendar = Calendar(identifier: .gregorian)
-		dateFormatter.locale = Locale.autoupdatingCurrent
-		dateFormatter.setLocalizedDateFormatFromTemplate("MMMM y")
-	}
-
 	private func setupHeaderConstraints() {
-		// Enable Auto Layout for each view
+		
 		monthLabel.translatesAutoresizingMaskIntoConstraints = false
 		dayOfWeekStackView.translatesAutoresizingMaskIntoConstraints = false
 		separatorView.translatesAutoresizingMaskIntoConstraints = false
 
-		// Add constraints for monthLabel
 		NSLayoutConstraint.activate([
 			monthLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 15),
 			monthLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
 			monthLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30)
 		])
 
-		// Add constraints for dayOfWeekStackView
 		NSLayoutConstraint.activate([
 			dayOfWeekStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
 			dayOfWeekStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
 			dayOfWeekStackView.bottomAnchor.constraint(equalTo: separatorView.topAnchor, constant: -5)
 		])
 
-		// Add constraints for separatorView
 		NSLayoutConstraint.activate([
 			separatorView.leadingAnchor.constraint(equalTo: leadingAnchor),
 			separatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -125,13 +130,30 @@ final class CalendarHeaderView: UIView {
 			separatorView.heightAnchor.constraint(equalToConstant: 1)
 		])
 	}
+}
 
-	// MARK: - Helper Methods
+// MARK: - Setup DateFormatter
+
+private extension CalendarHeaderView {
+
+	func setupDateFormatter() {
+
+		dateFormatter = DateFormatter()
+		dateFormatter.calendar = Calendar(identifier: .gregorian)
+		dateFormatter.locale = Locale.autoupdatingCurrent
+		dateFormatter.setLocalizedDateFormatFromTemplate("MMMM y")
+	}
+}
+
+// MARK: - Helper Methods
+
+private extension CalendarHeaderView {
 
 	/// Returns the abbreviated letter representation for the day of the week.
 	/// - Parameter dayNumber: The numerical representation of the day of the week (1-7).
 	/// - Returns: Abbreviated letter representation of the day of the week.
-	private func dayOfWeekLetter(for dayNumber: Int) -> String {
+	func dayOfWeekLetter(for dayNumber: Int) -> String {
+
 		switch dayNumber {
 		case 1:
 			return "S"

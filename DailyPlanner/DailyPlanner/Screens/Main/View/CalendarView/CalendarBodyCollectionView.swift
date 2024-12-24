@@ -1,9 +1,12 @@
 import UIKit
 
+/// A custom collection view for displaying the body of a calendar.
 final class CalendarBodyCollectionView: UICollectionView {
 
 	// MARK: - Initialization
 
+	/// This initializer sets up the collection view with a flow layout and configures
+	/// its properties for displaying calendar cells.
 	init() {
 		let layout = UICollectionViewFlowLayout()
 		layout.minimumLineSpacing = 0
@@ -17,10 +20,14 @@ final class CalendarBodyCollectionView: UICollectionView {
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
+}
 
-	// MARK: - Private Methods
+// MARK: - Private Methods
 
-	private func configureCollectionView() {
+private extension CalendarBodyCollectionView {
+
+	func configureCollectionView() {
+
 		isScrollEnabled = false
 		backgroundColor = .systemGray6
 

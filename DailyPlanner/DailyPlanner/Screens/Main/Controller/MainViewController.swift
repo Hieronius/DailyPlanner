@@ -1,5 +1,6 @@
 import UIKit
 
+/// A view controller that manages the main interface for the calendar and task list.
 final class MainViewController: GenericViewController<MainView> {
 	
 	// MARK: - Public Properties
@@ -10,7 +11,7 @@ final class MainViewController: GenericViewController<MainView> {
 	/// An exact position of selected date on the screen
 	var selectedDateCellIndexPath: IndexPath?
 	
-	/// Populate from Realm
+	/// An array of tasks visible for the selected date.
 	var dailyVisibleTasks: [ToDo] = []
 	
 	// MARK: - Private Properties
@@ -25,7 +26,13 @@ final class MainViewController: GenericViewController<MainView> {
 	
 	
 	// MARK: - Initialization
-	
+
+	/// Initializes a new instance of `MainViewController`.
+	///
+	/// - Parameters:
+	///   - dataManager: The data manager used for interacting with Realm storage.
+	///   - jsonHandler: The handler used for managing JSON data operations.
+	///   - calendarGenerator: The generator used for creating calendar views.
 	init(dataManager: RealmDataManagerProtocol,
 		 jsonHandler: JSONHandlerProtocol,
 		 calendarGenerator: CalendarGeneratorProtocol) {
@@ -65,20 +72,140 @@ final class MainViewController: GenericViewController<MainView> {
 		
 		isInitialAppLaunch = false
 	}
-	
-	// MARK: - Private Methods
-	
-	private func selectInitialDate() {
+}
+
+// MARK: - Private Methods
+
+// MARK: Setup Delegates
+
+private extension MainViewController {
+
+	func setupDelegates() {
+
+		rootView.calendarFooterView.delegate = self
+		rootView.calendarCollectionView.dataSource = self
+		rootView.calendarCollectionView.delegate = self
+		rootView.tasksTableView.delegate = self
+	}
+}
+
+// MARK: - Setup Navigation Bar
+
+private extension MainViewController {
+
+	func setupNavigationBar() {
+
+		let optionsButton = UIBarButtonItem(
+
+			image: UIImage(systemName: "gear"),
+			style: .plain,
+			target: self,
+			action: #selector(showOptionsMenu)
+		)
+
+		optionsButton.tintColor = .white
+		navigationItem.leftBarButtonItem = optionsButton
+
+		let createButton = UIBarButtonItem(
+
+			title: "New Task +",
+			style: .plain,
+			target: self,
+			action: #selector(createButtonTapped)
+		)
+
+		createButton.tintColor = .white
+		navigationItem.rightBarButtonItem = createButton
+	}
+
+	@objc func showOptionsMenu() {
+
+		let alertController = UIAlertController(title: nil,
+												message: nil,
+												preferredStyle: .actionSheet)
+
+		let shareAction = UIAlertAction(title: "Share tasks",
+										style: .default) { action in
+			self.shareTasks()
+		}
+		alertController.addAction(shareAction)
+
+		let importAction = UIAlertAction(title: "Import tasks",
+										 style: .default) { action in
+			self.importTasks()
+		}
+		alertController.addAction(importAction)
+
+		let deleteAction = UIAlertAction(title: "Delete all tasks",
+										 style: .destructive) { action in
+			self.dataManager.deleteAllTasks()
+			self.dailyVisibleTasks = []
+			self.applySnapshot()
+		}
+		alertController.addAction(deleteAction)
+
+		let cancelAction = UIAlertAction(title: "Cancel",
+										 style: .cancel)
+		alertController.addAction(cancelAction)
+
+		present(alertController, animated: true)
+	}
+
+
+	@objc func createButtonTapped() {
+
+		let taskScreen = TaskViewController(screenMode: .newTask,
+											dataManager: dataManager)
+		navigationController?.pushViewController(taskScreen,
+												 animated: true)
+	}
+
+	func shareTasks() {
+
+		let tasksToShare = dataManager.getAllTasks()
+
+		do {
+			try jsonHandler.saveTodosToFile(tasksToShare, filename: "Tasks.json")
+		} catch {
+			print("Failed to encode tasks for sharing \(error.localizedDescription)")
+		}
+	}
+
+	func importTasks() {
+
+		do {
+			let tasksToImport = try jsonHandler.loadTodosFromFile(filename: "Tasks.json")
+			dataManager.saveAllTasks(tasksToImport)
+			dailyVisibleTasks = dataManager.loadDailyTasks(date: selectedDate)
+			applySnapshot()
+		} catch {
+			print("Failed to decode tasks from import \(error.localizedDescription)")
+		}
+	}
+}
+
+// MARK: Setup Initial Tasks
+
+private extension MainViewController {
+
+	func selectInitialDate() {
 		
 		if let todayIndex = calendarGenerator.generateDaysInMonth().firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: Date()) }) {
 			
 			let todayIndexPath = IndexPath(row: todayIndex, section: 0)
-			collectionView(rootView.calendarCollectionView, didSelectItemAt: todayIndexPath) // Programmatically select today
+			collectionView(rootView.calendarCollectionView, didSelectItemAt: todayIndexPath)
 		}
 	}
-	
-	/// Method to filter tasks by it's start date and populate accordingly to result
-	private func groupTasksByHour(todos: [ToDo]) -> [Int: [ToDo]] {
+
+	func updateCalendar() {
+
+		rootView.calendarCollectionView.reloadData()
+		rootView.calendarHeaderView.baseDate = calendarGenerator.baseDate
+		dailyVisibleTasks = dataManager.loadDailyTasks(date: selectedDate)
+		applySnapshot()
+	}
+
+	func groupTasksByHour(todos: [ToDo]) -> [Int: [ToDo]] {
 		
 		var groupedTasks = [Int: [ToDo]]()
 		let calendar = Calendar.current
@@ -96,117 +223,43 @@ final class MainViewController: GenericViewController<MainView> {
 		
 		return groupedTasks
 	}
-	
-	// MARK: - Setup Navigation Bar
-	
-	private func setupNavigationBar() {
-		
-		let optionsButton = UIBarButtonItem(
-			
-			image: UIImage(systemName: "gear"),
-			style: .plain,
-			target: self,
-			action: #selector(showOptionsMenu)
-		)
-		
-		optionsButton.tintColor = .white
-		navigationItem.leftBarButtonItem = optionsButton
-		
-		let createButton = UIBarButtonItem(
-			
-			title: "New Task +",
-			style: .plain,
-			target: self,
-			action: #selector(createButtonTapped)
-		)
-		
-		createButton.tintColor = .white
-		navigationItem.rightBarButtonItem = createButton
-	}
-	
-	@objc private func showOptionsMenu() {
-		
-		let alertController = UIAlertController(title: nil,
-												message: nil,
-												preferredStyle: .actionSheet)
-		
-		let shareAction = UIAlertAction(title: "Share tasks",
-										style: .default) { action in
-			self.shareTasks()
+}
+
+// MARK: - UIDiffableDataSource
+
+private extension MainViewController {
+
+	func setupDataSource() {
+		dataSource = UITableViewDiffableDataSource<Int, ToDo>(tableView: rootView.tasksTableView) { (tableView, indexPath, todo) -> UITableViewCell? in
+
+			guard let cell = tableView.dequeueReusableCell(withIdentifier: ToDoCell.reuseIdentifier, for:indexPath) as? ToDoCell else {
+				return UITableViewCell()
+			}
+
+			cell.configure(with: todo)
+			return cell
 		}
-		alertController.addAction(shareAction)
-		
-		let importAction = UIAlertAction(title: "Import tasks",
-										 style: .default) { action in
-			self.importTasks()
-		}
-		alertController.addAction(importAction)
-		
-		let deleteAction = UIAlertAction(title: "Delete all tasks",
-										 style: .destructive) { action in
-			self.dataManager.deleteAllTasks()
-			self.dailyVisibleTasks = []
-			self.applySnapshot()
-		}
-		alertController.addAction(deleteAction)
-		
-		let cancelAction = UIAlertAction(title: "Cancel",
-										 style: .cancel)
-		alertController.addAction(cancelAction)
-		
-		present(alertController, animated: true)
+
 	}
-	
-	
-	@objc private func createButtonTapped() {
-		
-		let taskScreen = TaskViewController(screenMode: .newTask,
-											dataManager: dataManager)
-		navigationController?.pushViewController(taskScreen,
-												 animated: true)
-	}
-	
-	// MARK: Convert Tasks from Realm into JSON file and prepare to share
-	
-	private func shareTasks() {
-		
-		let tasksToShare = dataManager.getAllTasks()
-		
-		do {
-			try jsonHandler.saveTodosToFile(tasksToShare, filename: "Tasks.json")
-		} catch {
-			print("Failed to encode tasks for sharing \(error.localizedDescription)")
+
+	func applySnapshot() {
+		let groupedTasks = groupTasksByHour(todos: dailyVisibleTasks)
+		var snapshot = NSDiffableDataSourceSnapshot<Int, ToDo>()
+
+		for hour in 0..<24 {
+			snapshot.appendSections([hour])
+			if let tasksForHour = groupedTasks[hour] {
+				snapshot.appendItems(tasksForHour, toSection: hour)
+			}
 		}
-	}
-	
-	private func importTasks() {
-		
-		do {
-			let tasksToImport = try jsonHandler.loadTodosFromFile(filename: "Tasks.json")
-			dataManager.saveAllTasks(tasksToImport)
-			dailyVisibleTasks = dataManager.loadDailyTasks(date: selectedDate)
-			applySnapshot()
-		} catch {
-			print("Failed to decode tasks from import \(error.localizedDescription)")
-		}
-	}
-	
-	// MARK: Setup Controller
-	
-	private func setupDelegates() {
-		
-		rootView.calendarFooterView.delegate = self
-		rootView.calendarCollectionView.dataSource = self
-		rootView.calendarCollectionView.delegate = self
-		rootView.tasksTableView.delegate = self
+
+		dataSource.apply(snapshot, animatingDifferences: true)
 	}
 }
 
 // MARK: - CalendarScreenFooterViewDelegate
 
 extension MainViewController: CalendarFooterViewDelegate {
-	
-	// MARK: - CalendarFooterViewDelegate Methods
 	
 	func previousMonthButtonTapped() {
 		calendarGenerator.baseDate = calendarGenerator.dateService.calendar.date(
@@ -227,28 +280,18 @@ extension MainViewController: CalendarFooterViewDelegate {
 		
 		updateCalendar()
 	}
-	
-	// MARK: - Private Methods
-	
-	private func updateCalendar() {
-		
-		let days = calendarGenerator.generateDaysInMonth()
-		rootView.calendarCollectionView.reloadData()
-		rootView.calendarHeaderView.baseDate = calendarGenerator.baseDate
-		dailyVisibleTasks = dataManager.loadDailyTasks(date: selectedDate)
-		applySnapshot()
-	}
-	
 }
 
 // MARK: - UICollectionViewDataSource
 
 extension MainViewController: UICollectionViewDataSource {
+
 	func collectionView(_ collectionView:UICollectionView, numberOfItemsInSection section:Int) -> Int {
 		return calendarGenerator.generateDaysInMonth().count
 	}
 	
 	func collectionView(_ collectionView:UICollectionView, cellForItemAt indexPath : IndexPath) -> UICollectionViewCell {
+
 		let day = calendarGenerator.generateDaysInMonth()[indexPath.row]
 		
 		let cell = collectionView.dequeueReusableCell(withReuseIdentifier : CalendarCell.reuseIdentifier, for : indexPath) as! CalendarCell
@@ -287,43 +330,11 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
 		layout collectionViewLayout: UICollectionViewLayout,
 		sizeForItemAt indexPath: IndexPath
 	) -> CGSize {
+
 		let width = Int(collectionView.frame.width / 7)
 		let height = Int(collectionView.frame.height) / calendarGenerator.numberOfWeeksInBaseDate
 		return CGSize(width: width, height: height)
 	}
-}
-
-// MARK: - UIDiffableDataSource
-
-extension MainViewController {
-	
-	private func setupDataSource() {
-		dataSource = UITableViewDiffableDataSource<Int, ToDo>(tableView: rootView.tasksTableView) { (tableView, indexPath, todo) -> UITableViewCell? in
-			
-			guard let cell = tableView.dequeueReusableCell(withIdentifier: ToDoCell.reuseIdentifier, for:indexPath) as? ToDoCell else {
-				return UITableViewCell()
-			}
-			
-			cell.configure(with: todo)
-			return cell
-		}
-		
-	}
-	
-	func applySnapshot() {
-		let groupedTasks = groupTasksByHour(todos: dailyVisibleTasks)
-		var snapshot = NSDiffableDataSourceSnapshot<Int, ToDo>()
-		
-		for hour in 0..<24 {
-			snapshot.appendSections([hour])
-			if let tasksForHour = groupedTasks[hour] {
-				snapshot.appendItems(tasksForHour, toSection: hour)
-			}
-		}
-		
-		dataSource.apply(snapshot, animatingDifferences: true)
-	}
-	
 }
 
 // MARK: - UITableViewDelegate
@@ -331,6 +342,7 @@ extension MainViewController {
 extension MainViewController: UITableViewDelegate {
 	
 	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+
 		guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: HourHeaderView.reuseIdentifier) as? HourHeaderView else {
 			return UITableViewHeaderFooterView()
 		}
@@ -370,5 +382,3 @@ extension MainViewController: UITableViewDelegate {
 		}
 	}
 }
-
-

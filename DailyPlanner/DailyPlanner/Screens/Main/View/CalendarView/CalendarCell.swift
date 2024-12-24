@@ -1,19 +1,17 @@
 import UIKit
 
+/// A custom collection view cell that represents a single day in a calendar.
 final class CalendarCell: UICollectionViewCell {
-
-	// MARK: - Private Properties
-
-	var selectionBackgroundView: UIView!
-	private var numberLabel: UILabel!
 
 	// MARK: - Public Properties
 
+	/// The reuse identifier for the cell.
 	static let reuseIdentifier = String(describing: CalendarCell.self)
 
 	/// The date associated with this cell.
 	var day: Day? {
 		didSet {
+
 			guard let day = day else { return }
 			numberLabel.text = day.number
 			updateSelectionStatus()
@@ -22,14 +20,21 @@ final class CalendarCell: UICollectionViewCell {
 
 	// Property to track whether the cell is selected
 	var isSelectedCell: Bool = false {
+		
 		didSet {
 			selectionBackgroundView.isHidden = !isSelectedCell
 			numberLabel.textColor = isSelectedCell ? (isSmallScreenSize ? .systemRed : .white) : (day?.isWithinDisplayedMonth == true ? .label : .secondaryLabel)
 		}
 	}
 
+	// MARK: - Private Properties
+
+	private var selectionBackgroundView: UIView!
+	private var numberLabel: UILabel!
+
 	// MARK: - Initialization
 
+	/// This initializer sets up the cell's views and layout.
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 
@@ -40,16 +45,25 @@ final class CalendarCell: UICollectionViewCell {
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	// MARK: - Setup
+	// MARK: - Layout
 
-	/// Sets up the subviews of the cell.
-	private func setupViews() {
+	override func layoutSubviews() {
+		super.layoutSubviews()
+	}
+}
+
+// MARK: - Setup Cell
+
+private extension CalendarCell {
+
+	func setupViews() {
+
 		setupBackground()
 		setupNumberLabel()
 		setupCollectionViewCellConstraints()
 	}
 
-	private func setupBackground() {
+	func setupBackground() {
 		
 		selectionBackgroundView = UIView()
 		selectionBackgroundView.clipsToBounds = true
@@ -60,7 +74,7 @@ final class CalendarCell: UICollectionViewCell {
 		selectionBackgroundView.layer.cornerRadius = 45 / 2
 	}
 
-	private func setupNumberLabel() {
+	func setupNumberLabel() {
 
 		numberLabel = UILabel()
 		numberLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -76,7 +90,6 @@ final class CalendarCell: UICollectionViewCell {
 		selectionBackgroundView.translatesAutoresizingMaskIntoConstraints = false
 		numberLabel.translatesAutoresizingMaskIntoConstraints = false
 
-		// Add constraints for selectionBackgroundView
 		NSLayoutConstraint.activate([
 			selectionBackgroundView.centerXAnchor.constraint(equalTo: numberLabel.centerXAnchor),
 			selectionBackgroundView.centerYAnchor.constraint(equalTo: numberLabel.centerYAnchor),
@@ -84,23 +97,20 @@ final class CalendarCell: UICollectionViewCell {
 			selectionBackgroundView.heightAnchor.constraint(equalToConstant: 45)
 		])
 
-		// Add constraints for numberLabel
 		NSLayoutConstraint.activate([
 			numberLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
 			numberLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
 		])
 	}
+}
 
-	// MARK: - Layout
+// MARK: - Helper Methods
 
-	override func layoutSubviews() {
-		super.layoutSubviews()
-	}
-
-	// MARK: - Helper Methods
+private extension CalendarCell {
 
 	/// Updates the selection status of the cell.
-	private func updateSelectionStatus() {
+	func updateSelectionStatus() {
+
 		guard let day = day else { return }
 
 		if day.isSelected {
@@ -111,7 +121,8 @@ final class CalendarCell: UICollectionViewCell {
 	}
 
 	/// Checks if the screen size is small.
-	private var isSmallScreenSize: Bool {
+	var isSmallScreenSize: Bool {
+
 		let isCompact = traitCollection.horizontalSizeClass == .compact
 		let smallWidth = UIScreen.main.bounds.width <= 350
 		let widthGreaterThanHeight = UIScreen.main.bounds.width > UIScreen.main.bounds.height
@@ -120,7 +131,8 @@ final class CalendarCell: UICollectionViewCell {
 	}
 
 	/// Applies the selected style to the cell.
-	private func applySelectedStyle() {
+	func applySelectedStyle() {
+
 		numberLabel.textColor = isSmallScreenSize ? .systemRed : .white
 		selectionBackgroundView.isHidden = isSmallScreenSize
 	}
@@ -128,7 +140,8 @@ final class CalendarCell: UICollectionViewCell {
 	/// Applies the default style to the cell.
 	///
 	/// - Parameter isWithinDisplayedMonth: A Boolean value indicating whether the date is within the displayed month.
-	private func applyDefaultStyle(isWithinDisplayedMonth: Bool) {
+	func applyDefaultStyle(isWithinDisplayedMonth: Bool) {
+
 		numberLabel.textColor = isWithinDisplayedMonth ? .label : .secondaryLabel
 		selectionBackgroundView.isHidden = true
 	}

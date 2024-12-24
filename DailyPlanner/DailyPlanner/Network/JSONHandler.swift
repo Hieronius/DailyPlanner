@@ -52,8 +52,12 @@ protocol JSONHandlerProtocol {
 /// Implementation of the JSONHandler service
 final class JSONHandler: JSONHandlerProtocol {
 
+	// MARK: - Private Properties
+
 	private let decoder = JSONDecoder()
 	private let encoder = JSONEncoder()
+
+	// MARK: - Public Methods
 
 	/// Decodes the given data into a specified type.
 	///
@@ -143,6 +147,11 @@ final class JSONHandler: JSONHandlerProtocol {
 		let todoJSONs = try decodeToDoJSON(from: data)
 		return todoJSONs.map { ToDo(json: $0) }
 	}
+}
+
+// MARK: Helpers
+
+private extension JSONHandler {
 
 	/// Helper function to get Documents Directory
 	private func getDocumentsDirectory() -> URL {

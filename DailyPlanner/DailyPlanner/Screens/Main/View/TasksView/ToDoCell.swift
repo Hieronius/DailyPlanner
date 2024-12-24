@@ -1,10 +1,11 @@
 import UIKit
 
-/// Custom cell to store our tasks
+/// A custom table view cell that represents a task in the to-do list.
 final class ToDoCell: UITableViewCell {
 
 	// MARK: - Public Properties
 
+	/// The reuse identifier for the cell.
 	static let reuseIdentifier = "ToDoCell"
 
 	// MARK: - Static Properties
@@ -15,6 +16,7 @@ final class ToDoCell: UITableViewCell {
 
 	// MARK: - Initialization
 
+	/// This initializer sets up the cell's style and reuse identifier.
 	override init(style: UITableViewCell.CellStyle,
 				  reuseIdentifier: String?) {
 		super.init(style: style,
@@ -32,31 +34,39 @@ final class ToDoCell: UITableViewCell {
 		super.setSelected(false, animated: false)
 	}
 
+	/// Configures the cell with a given task.
+	///
+	/// This method updates the cell's labels and checkbox image based on the provided
+	/// `ToDo` object.
+	///
+	/// - Parameter task: The `ToDo` object containing the task's data.
 	func configure(with task: ToDo) {
+
 		titleLabel.text = task.title
 		descriptionLabel.text = task.description
 		checkboxImageView.image = task.isCompleted ? UIImage(systemName: "checkmark.square") : UIImage(systemName: "square")
 	}
+}
 
-	// MARK: - Private Methods
+// MARK: - Private Methods
 
-	private func setupView() {
+private extension ToDoCell {
+
+	func setupView() {
+
 		backgroundColor = .systemGray6
-		// Configure titleLabel
+
 		titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
 		contentView.addSubview(titleLabel)
 
-		// Configure descriptionLabel
 		descriptionLabel.font = UIFont.systemFont(ofSize: 14)
 		descriptionLabel.textColor = .gray
 		contentView.addSubview(descriptionLabel)
 
-		// Configure checkboxImageView
 		checkboxImageView.contentMode = .scaleAspectFit
 		checkboxImageView.tintColor = .systemRed
 		contentView.addSubview(checkboxImageView)
 
-		// Set constraints for the views
 		titleLabel.translatesAutoresizingMaskIntoConstraints = false
 		descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
 		checkboxImageView.translatesAutoresizingMaskIntoConstraints = false
