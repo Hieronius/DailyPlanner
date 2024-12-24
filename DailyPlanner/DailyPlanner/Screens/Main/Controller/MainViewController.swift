@@ -262,6 +262,7 @@ private extension MainViewController {
 extension MainViewController: CalendarFooterViewDelegate {
 	
 	func previousMonthButtonTapped() {
+
 		calendarGenerator.baseDate = calendarGenerator.dateService.calendar.date(
 			byAdding: .month,
 			value: -1,
@@ -272,6 +273,7 @@ extension MainViewController: CalendarFooterViewDelegate {
 	}
 	
 	func nextMonthButtonTapped() {
+		
 		calendarGenerator.baseDate = calendarGenerator.dateService.calendar.date(
 			byAdding: .month,
 			value: 1,
