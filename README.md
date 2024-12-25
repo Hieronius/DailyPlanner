@@ -14,9 +14,14 @@ An app where you can create, edit and sort tasks by the date and time. Plus you 
 
 
 ## 🖼Screenshots
+Main Screen
 
-![DailyPlanner2](https://github.com/user-attachments/assets/b8735f54-4d70-4baa-a367-04c1ec7a489e)
-![DailyPlanner1](https://github.com/user-attachments/assets/970cc100-9a36-4055-a4ff-78d1fc4f04cb)
+<img src="https://github.com/user-attachments/assets/5c3dffc1-82f2-4343-8f2e-e325ebf56037" alt="Main Screen" width="250" />  
+
+
+Detailed Screen
+
+<img src="https://github.com/user-attachments/assets/b8735f54-4d70-4baa-a367-04c1ec7a489e" alt="Detailed Screen" width="250" />
 
 
 ## 🛠Tools/Technologies
