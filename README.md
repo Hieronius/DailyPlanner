@@ -11,7 +11,17 @@ An app where you can create, edit and sort tasks by the date and time. Plus you 
 - [ToDo](#📌ToDo)
 
 ## 📺Demo
+Part 1
 
+https://github.com/user-attachments/assets/23171f00-968c-4677-8533-e58bad597a97
+
+Part 2
+
+https://github.com/user-attachments/assets/6234641c-a21f-4437-94b7-6b6fb91634b6
+
+Part 3
+
+https://github.com/user-attachments/assets/0e70baf1-f906-4680-80c0-c28ed4ccc18e
 
 ## 🖼Screenshots
 Main Screen
