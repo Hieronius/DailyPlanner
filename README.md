@@ -8,7 +8,7 @@ An app where you can create, edit and sort tasks by the date and time. Plus you 
 - [Demo](#Demo)
 - [Screenshots](#Screenshots)
 - [Tools/Technologies](#Tools/Technologies)
-- [ToDo](#📌ToDo)
+- [ToDo](#ToDo)
 
 ## 📺Demo
 Part 1
@@ -35,7 +35,27 @@ Detailed Screen
 
 
 ## 🛠Tools/Technologies
+- URLSession
+- Realm
+- UIKit
+- UITableDiffableDataSource
+- Dependency Injection
+- XCTest
+- Swift Package Manager
+- MVC
 
 
 ## 📌ToDo
+- Add more documentation
+- Add more Unit Tests
+- Add UI Tests
+- Separate JSON Handler into different services
+- Refactor CalendarGenerator to avoid using singletons
+- Implement writeAsync while working with Realm operations
+- Refactor custom calendar to suit better for small screen devices
+- Refactor time stamp headers style for more nicer ones
+- Implement logic to turn isCompleted check box of the task right in the MainScreen
+- Implement logic to go back into first task of the day on the table when you back from Detailed Screen
+- Create separate concurrent queue for sharing/importing notes
+- Create Persistent/Network related Enum with erros for better handling
 
