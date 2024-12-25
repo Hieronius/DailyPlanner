@@ -8,7 +8,7 @@ An app where you can create, edit and sort tasks by the date and time. Plus you 
 - [Demo](#Demo)
 - [Screenshots](#Screenshots)
 - [Tools/Technologies](#Tools/Technologies)
-- [ToDo](#ToDo)
+- [ToDo](#📌ToDo)
 
 ## 📺Demo
 
