@@ -7,7 +7,7 @@ An app where you can create, edit and sort tasks by the date and time. Plus you 
 
 - [Demo](#Demo)
 - [Screenshots](#Screenshots)
-- [Tools/Technologies](#Tools/Technologies)
+- [Tools/Technologies](#Tools)
 - [ToDo](#ToDo)
 
 ## 📺Demo
@@ -34,7 +34,7 @@ Detailed Screen
 <img src="https://github.com/user-attachments/assets/b8735f54-4d70-4baa-a367-04c1ec7a489e" alt="Detailed Screen" width="250" />
 
 
-## 🛠Tools/Technologies
+## 🛠Tools
 - URLSession
 - Realm
 - UIKit
